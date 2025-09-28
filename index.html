@@ -1,35 +1,48 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="uk">
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>ЗВІТИ З ПРАКТИЧНИХ РОБІТ</title>
+    <title>ІО-35 Степанов Олександр | Звіти з практичних робіт</title>
+    <link rel="stylesheet" href="globals.css" />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&display=swap" rel="stylesheet" />
   </head>
   <body>
     <header>
-      <h1>ЗВІТИ З ПРАКТИЧНИХ РОБІТ</h1>
-      <h2>З ДИСЦИПЛІНИ "WEB-ОРІЄНТОВАНІ ТЕХНОЛОГІЇ. FRONTEND РОЗРОБКИ"</h2>
+      <div class="header-content">
+        <div class="student-info">
+          <h1>ЗВІТИ З ПРАКТИЧНИХ РОБІТ</h1>
+          <h2>З ДИСЦИПЛІНИ «WEB-ОРІЄНТОВАНІ ТЕХНОЛОГІЇ. FRONTEND РОЗРОБКИ»</h2>
+          <p>Виконавець: Студент групи IO-35 — Степанов Олександр Олександрович</p>
+        </div>
+        <div class="student-photo">
+          <img src="assets/photo.jpg" alt="Фото студента" />
+        </div>
+      </div>
+
+      <nav>
+        <button data-lab="pages/page1.html">Практична робота №1</button>
+        <button data-lab="pages/page2.html">Практична робота №2</button>
+        <button data-lab="pages/page3.html">Практична робота №3</button>
+        <button data-lab="pages/page4.html">Практична робота №4</button>
+        <button data-lab="pages/page5.html">Практична робота №5</button>
+        <button data-lab="pages/page6.html">Практична робота №6</button>
+        <button data-lab="pages/page7.html">Практична робота №7</button>
+        <button data-lab="pages/page8.html">Практична робота №8</button>
+      </nav>
     </header>
 
-    <section id="student-info">
-      <p></p>Виконавець: Студент групи IO-35 — Степанов Олександр Олександрович</p>
-      <p></p>Фото студента:</p>
-      <img src="assets/photo.jpg" alt="Фото студента" width="150">
-    </section>
+    <div class="layout">
+      <aside id="toc" aria-label="Зміст">
+        <div class="toc-title">Зміст</div>
+        <ul class="toc-list"><!-- filled by script.js --></ul>
+      </aside>
 
-    <nav>
-      <button data-lab="pages/page1.html">Практична робота №1</button>
-      <button data-lab="pages/page2.html">Практична робота №2</button>
-      <button data-lab="pages/page3.html">Практична робота №3</button>
-      <button data-lab="pages/page4.html">Практична робота №4</button>
-      <button data-lab="pages/page5.html">Практична робота №5</button>
-      <button data-lab="pages/page6.html">Практична робота №6</button>
-      <button data-lab="pages/page7.html">Практична робота №7</button>
-      <button data-lab="pages/page8.html">Практична робота №8</button>
-    </nav>
+      <main id="content">
+        <p>Оберіть лабораторну роботу вище.</p>
+      </main>
+    </div>
 
-    <main id="content">
-      <p>Оберіть лабораторну роботу вище.</p>
-    </main>
+    <script src="script.js"></script>
   </body>
 </html>
