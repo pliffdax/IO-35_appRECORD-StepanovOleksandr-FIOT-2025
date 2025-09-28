@@ -3,14 +3,19 @@ const buttons = document.querySelectorAll("header nav button");
 const tocRoot = document.querySelector("#toc .toc-list");
 const tocEl = document.getElementById("toc");
 const layoutEl = document.querySelector(".layout");
+const headerEl = document.querySelector("header");
+
+function updateHeaderOffsetVar() {
+  const headerH = headerEl?.offsetHeight || 0;
+  document.documentElement.style.setProperty("--header-sticky-offset", `${headerH}px`);
+}
+window.addEventListener("resize", () => requestAnimationFrame(updateHeaderOffsetVar));
+window.addEventListener("DOMContentLoaded", () => requestAnimationFrame(updateHeaderOffsetVar));
 
 function showError(msg = "Немає контенту для цієї лабораторної.") {
   content.innerHTML = `<p class="error">${msg}</p>`;
-  // При помилці — ховаємо TOC і робимо один стовпець
-  if (tocEl && layoutEl) {
-    tocEl.classList.add("is-hidden");
-    layoutEl.classList.add("layout--no-toc");
-  }
+  tocEl?.classList.add("is-hidden");
+  layoutEl?.classList.add("layout--no-toc");
 }
 
 function setActiveButton(btn) {
@@ -30,45 +35,99 @@ function ensureId(el) {
   return el.id;
 }
 
-let spyObserver;
-function initScrollSpy(headings) {
-  if (spyObserver) spyObserver.disconnect();
-  const options = { root: null, rootMargin: "0px 0px -65% 0px", threshold: 0 };
-  spyObserver = new IntersectionObserver((entries) => {
-    entries.forEach((entry) => {
-      const id = entry.target.id;
-      const link = tocRoot.querySelector(`a[href="#${CSS.escape(id)}"]`);
-      if (!link) return;
-      if (entry.isIntersecting) {
-        tocRoot.querySelectorAll("a").forEach((a) => a.classList.remove("active"));
-        link.classList.add("active");
-      }
-    });
-  }, options);
-  headings.forEach((h) => spyObserver.observe(h));
+function getDynamicAnchorOffset() {
+  const rect = headerEl?.getBoundingClientRect();
+  const base = 20;
+  return rect && rect.bottom > 0 ? Math.round(rect.bottom) + base : base;
 }
 
-// === Головне: будуємо TOC і керуємо його видимістю ===
+let headingsCache = []; // [{ id, absTop }]
+let ticking = false;
+
+function computeHeadingPositions() {
+  headingsCache = [...content.querySelectorAll("h2, h3, h4")].map(h => ({
+    id: h.id,
+    absTop: h.getBoundingClientRect().top + window.scrollY,
+  }));
+}
+
+function onScrollSpy() {
+  if (ticking) return;
+  ticking = true;
+  requestAnimationFrame(() => {
+    if (!headingsCache.length) { ticking = false; return; }
+
+    const yAdj = window.scrollY + getDynamicAnchorOffset();
+    let current = headingsCache[0].id;
+
+    for (const h of headingsCache) {
+      if (yAdj >= h.absTop) current = h.id; else break;
+    }
+
+    if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 2) {
+      current = headingsCache[headingsCache.length - 1].id;
+    }
+
+    tocRoot.querySelectorAll("a").forEach(a =>
+      a.classList.toggle("active", a.getAttribute("href") === `#${current}`)
+    );
+
+    ticking = false;
+  });
+}
+window.addEventListener("scroll", onScrollSpy, { passive: true });
+
+function ensureEndSpacer() {
+  let spacer = content.querySelector("#scroll-extend-spacer");
+  if (!spacer) {
+    spacer = document.createElement("div");
+    spacer.id = "scroll-extend-spacer";
+    spacer.style.height = "0px";
+    spacer.style.pointerEvents = "none";
+    content.appendChild(spacer);
+  }
+  return spacer;
+}
+
+function updateLastHeadingSpacer() {
+  const spacer = ensureEndSpacer();
+  const heads = content.querySelectorAll("h2, h3, h4");
+  if (!heads.length) { spacer.style.height = "0px"; return; }
+
+  const last = heads[heads.length - 1];
+  const lastAbsTop = last.getBoundingClientRect().top + window.scrollY;
+
+  const tocTop = parseFloat(getComputedStyle(document.documentElement).getPropertyValue("--toc-top")) || 0;
+  const desiredOffset = Math.max(20, tocTop);
+
+  const yWant = lastAbsTop - desiredOffset;
+  const vpH = window.innerHeight;
+  const maxScrollNow = document.body.scrollHeight - vpH;
+
+  let need = Math.ceil(yWant - maxScrollNow);
+  if (need > 0) need += 16;
+  spacer.style.height = `${Math.max(0, need)}px`;
+}
+
 function buildTOC() {
   tocRoot.innerHTML = "";
   const headings = content.querySelectorAll("h2, h3, h4");
 
   if (!headings.length) {
-    // Немає заголовків → ховаємо TOC і один стовпець
     tocEl.classList.add("is-hidden");
     layoutEl.classList.add("layout--no-toc");
-    if (spyObserver) spyObserver.disconnect();
+    headingsCache = [];
+    ensureEndSpacer().style.height = "0px";
     return;
   }
 
-  // Є заголовки → показуємо TOC і дві колонки
   tocEl.classList.remove("is-hidden");
   layoutEl.classList.remove("layout--no-toc");
 
   headings.forEach((h) => {
     const id = ensureId(h);
     const li = document.createElement("li");
-    const a = document.createElement("a");
+    const a  = document.createElement("a");
     a.href = `#${id}`;
     a.textContent = h.textContent.trim();
     a.classList.add(`toc-${h.tagName.toLowerCase()}`);
@@ -81,17 +140,25 @@ function buildTOC() {
       e.preventDefault();
       const target = document.getElementById(a.getAttribute("href").slice(1));
       if (target) {
+        tocRoot.querySelectorAll("a").forEach(x => x.classList.remove("active"));
+        a.classList.add("active");
         target.scrollIntoView({ behavior: "smooth", block: "start" });
         history.replaceState(null, "", `#${target.id}`);
       }
     });
   });
 
-  initScrollSpy(headings);
+  computeHeadingPositions();
+  updateLastHeadingSpacer();
+  onScrollSpy();
 }
 
-async function loadLab(url) {
+async function loadLab(urlLike) {
   content.innerHTML = `<p>Завантаження...</p>`;
+
+  let url;
+  try { url = new URL(urlLike, window.location.href).toString(); }
+  catch { return showError("Некоректний шлях до файлу лабораторної."); }
 
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 10000);
@@ -99,15 +166,14 @@ async function loadLab(url) {
   try {
     const res = await fetch(url, { cache: "no-store", signal: controller.signal });
     clearTimeout(timeoutId);
-
-    if (!res.ok) return showError();
+    if (!res.ok) return showError(`Не вдалось завантажити (${res.status}).`);
 
     const html = (await res.text()).trim();
     if (!html) return showError();
 
     content.innerHTML = html;
 
-    // Після вставки — будуємо TOC (він сам вирішить: показати чи сховати)
+    updateHeaderOffsetVar();
     buildTOC();
 
     if (location.hash) {
@@ -116,26 +182,38 @@ async function loadLab(url) {
     }
   } catch (err) {
     clearTimeout(timeoutId);
-    showError();
-    console.error("[lab-load-error]", err);
+    console.error("[lab-load-error]", err, url);
+    if (location.protocol === "file:") showError("Браузер блокує завантаження локальних файлів. Запусти локальний сервер.");
+    else showError("Помилка мережі при завантаженні лабораторної.");
   }
 }
 
-// Обробники кліків + автозавантаження як і раніше
 buttons.forEach((btn) => {
   btn.addEventListener("click", async () => {
     const url = btn.dataset.lab;
     setActiveButton(btn);
+
     const labNum = url.match(/page(\d+)\.html$/)?.[1];
     const newUrl = new URL(location.href);
     if (labNum) newUrl.searchParams.set("lab", labNum);
     else newUrl.searchParams.delete("lab");
     history.replaceState(null, "", newUrl.toString());
+
     await loadLab(url);
   });
 });
 
+window.addEventListener("resize", () => {
+  if (content.innerHTML.trim()) {
+    computeHeadingPositions();
+    updateLastHeadingSpacer();
+    onScrollSpy();
+  }
+}, { passive: true });
+
 window.addEventListener("DOMContentLoaded", () => {
+  updateHeaderOffsetVar();
+
   const params = new URLSearchParams(location.search);
   const lab = params.get("lab") || "1";
   const targetBtn =
