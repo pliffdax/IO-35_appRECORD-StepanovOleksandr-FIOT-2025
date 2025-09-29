@@ -152,7 +152,7 @@ main h4 {
 }
 main h2 { font-size: 1.35rem; }
 main h3 { font-size: 1.15rem; }
-main h4 { font-size: 1.02rem; color: #444; }
+main h4 { font-size: 1.02rem; }
 
 main section { margin-bottom: 1.1rem; }
 
@@ -160,11 +160,20 @@ main pre {
   background: #f6f6f6;
   padding: 1rem;
   border-radius: 8px;
-  overflow: auto;
   border: 1px solid var(--color-border-light);
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  word-break: break-word;
+  max-width: 100%;  overflow-x: hidden;
+  overflow-y: auto;
+}
+main pre code {
+  font-size: 0.75rem;
 }
 main code {
   font-family: ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", monospace;
+  tab-size: 2;
+  font-size: 0.95rem;
 }
 main table {
   width: 100%;
@@ -192,6 +201,20 @@ main figcaption {
   font-size: .9rem;
   opacity: .8;
   margin-top: .4rem;
+}
+
+.img-xs { max-width: 240px; }
+.img-sm { max-width: 360px; }
+.img-md { max-width: 480px; }
+.img-lg { max-width: 640px; }
+.img-xl { max-width: 800px; }
+
+figure img,
+img.responsive {
+  /* width: 100%; */
+  /* height: auto; */
+  display: block;
+  /* margin-inline: auto; */
 }
 
 @media (max-width: 960px) {

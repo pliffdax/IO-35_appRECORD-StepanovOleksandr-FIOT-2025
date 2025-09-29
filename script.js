@@ -1,11 +1,21 @@
-const content   = document.getElementById("content");
-const buttons   = document.querySelectorAll("header nav button");
-const tocRoot   = document.querySelector("#toc .toc-list");
-const tocEl     = document.getElementById("toc");
-const layoutEl  = document.querySelector(".layout");
-const headerEl  = document.querySelector("header");
+const content = document.getElementById("content");
+const buttons = document.querySelectorAll("header nav button");
+const tocRoot = document.querySelector("#toc .toc-list");
+const tocEl = document.getElementById("toc");
+const layoutEl = document.querySelector(".layout");
+const headerEl = document.querySelector("header");
 
-/* ========= 1) Высота header для якорей (scroll-margin-top) ========= */
+const HEADING_SELECTOR = "h2, h3";
+
+function absolutizeAttr(selector, attr) {
+  content.querySelectorAll(selector).forEach((el) => {
+    const val = el.getAttribute(attr);
+    if (!val) return;
+    if (/^(?:[a-z]+:|\/\/|#|data:|mailto:|tel:)/i.test(val)) return;
+    el.setAttribute(attr, new URL(val, baseUrl).toString());
+  });
+}
+
 function updateHeaderOffsetVar() {
   const headerH = headerEl?.offsetHeight || 0;
   document.documentElement.style.setProperty("--header-sticky-offset", `${headerH}px`);
@@ -13,7 +23,6 @@ function updateHeaderOffsetVar() {
 window.addEventListener("resize", () => requestAnimationFrame(updateHeaderOffsetVar));
 window.addEventListener("DOMContentLoaded", () => requestAnimationFrame(updateHeaderOffsetVar));
 
-/* ========= 2) Утилиты ========= */
 function showError(msg = "Немає контенту для цієї лабораторної.") {
   content.innerHTML = `<p class="error">${msg}</p>`;
   tocEl?.classList.add("is-hidden");
@@ -35,7 +44,6 @@ function ensureId(el) {
   return el.id;
 }
 
-/* ========= 3) Scroll-Spy ========= */
 function getDynamicAnchorOffset() {
   const rect = headerEl?.getBoundingClientRect();
   const base = 20;
@@ -44,10 +52,10 @@ function getDynamicAnchorOffset() {
 
 let headingsCache = []; // [{ id, absTop }]
 let ticking = false;
-let programmaticScrollLock = false; // блокируем spy во время программного скролла
+let programmaticScrollLock = false;
 
 function computeHeadingPositions() {
-  headingsCache = [...content.querySelectorAll("h2, h3, h4")].map(h => ({
+  headingsCache = [...content.querySelectorAll(HEADING_SELECTOR)].map(h => ({
     id: h.id,
     absTop: h.getBoundingClientRect().top + window.scrollY,
   }));
@@ -66,7 +74,6 @@ function onScrollSpy() {
       if (yAdj >= h.absTop) current = h.id; else break;
     }
 
-    // у самого низа страницы — последний пункт
     if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 2) {
       current = headingsCache[headingsCache.length - 1].id;
     }
@@ -80,8 +87,6 @@ function onScrollSpy() {
 }
 window.addEventListener("scroll", onScrollSpy, { passive: true });
 
-/* ========= 4) Точный и БЫСТРЫЙ плавный скролл к заголовку ========= */
-// желаемый отступ (если хедер виден — его низ + зазор; иначе берём зазор TOC/top)
 function getDesiredScrollOffset() {
   const rect = headerEl?.getBoundingClientRect();
   if (rect && rect.bottom > 0) return Math.round(rect.bottom) + 20;
@@ -89,7 +94,6 @@ function getDesiredScrollOffset() {
   return Math.max(20, tocTop);
 }
 
-// своя анимация скролла (контроль длительности)
 function animateScrollTo(targetY, durationMs = 220) {
   const prefersReduced = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
   if (prefersReduced || durationMs <= 0) {
@@ -102,7 +106,6 @@ function animateScrollTo(targetY, durationMs = 220) {
     const delta  = targetY - startY;
     const start  = performance.now();
 
-    // лёгкое ускорение/замедление
     const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
 
     function step(now) {
@@ -117,7 +120,6 @@ function animateScrollTo(targetY, durationMs = 220) {
   });
 }
 
-// плавный скролл к началу заголовка с учётом хедера; без мигания подсветки
 async function scrollHeadingIntoViewSmooth(el, dur = 220) {
   if (!el) return;
   const offset  = getDesiredScrollOffset();
@@ -130,10 +132,9 @@ async function scrollHeadingIntoViewSmooth(el, dur = 220) {
   programmaticScrollLock = true;
   await animateScrollTo(targetY, dur);
   programmaticScrollLock = false;
-  onScrollSpy(); // после завершения — синхронизируем подсветку
+  onScrollSpy();
 }
 
-/* ========= 5) «Удлинитель» страницы, чтобы последний заголовок мог стать вверху ========= */
 function ensureEndSpacer() {
   let spacer = content.querySelector("#scroll-extend-spacer");
   if (!spacer) {
@@ -147,7 +148,7 @@ function ensureEndSpacer() {
 }
 function updateLastHeadingSpacer() {
   const spacer = ensureEndSpacer();
-  const heads = content.querySelectorAll("h2, h3, h4");
+  const heads = content.querySelectorAll(HEADING_SELECTOR);
   if (!heads.length) { spacer.style.height = "0px"; return; }
 
   const last = heads[heads.length - 1];
@@ -165,10 +166,9 @@ function updateLastHeadingSpacer() {
   spacer.style.height = `${Math.max(0, need)}px`;
 }
 
-/* ========= 6) TOC: генерация + клики ========= */
 function buildTOC() {
   tocRoot.innerHTML = "";
-  const headings = content.querySelectorAll("h2, h3, h4");
+  const headings = content.querySelectorAll(HEADING_SELECTOR);
 
   if (!headings.length) {
     tocEl.classList.add("is-hidden");
@@ -192,7 +192,6 @@ function buildTOC() {
     tocRoot.appendChild(li);
   });
 
-  // клик по TOC: мгновенная подсветка выбранного + быстрый плавный скролл
   tocRoot.querySelectorAll("a").forEach((a) => {
     a.addEventListener("click", (e) => {
       e.preventDefault();
@@ -212,7 +211,6 @@ function buildTOC() {
   onScrollSpy();
 }
 
-/* ========= 7) Загрузка страниц ========= */
 async function loadLab(urlLike) {
   content.innerHTML = `<p>Завантаження...</p>`;
 
@@ -233,10 +231,37 @@ async function loadLab(urlLike) {
 
     content.innerHTML = html;
 
+    const baseUrl = new URL(url, location.href);
+
+    function absolutizeAttr(selector, attr) {
+      content.querySelectorAll(selector).forEach((el) => {
+        const val = el.getAttribute(attr);
+        if (!val) return;
+        if (/^(?:[a-z]+:|\/\/|#|data:|mailto:|tel:|javascript:)/i.test(val)) return;
+        el.setAttribute(attr, new URL(val, baseUrl).toString());
+      });
+    }
+
+    absolutizeAttr("img[src]", "src");
+    absolutizeAttr("script[src]", "src");
+    absolutizeAttr("link[href]", "href");
+    absolutizeAttr("a[href]", "href");
+    absolutizeAttr("source[src]", "src");
+
+    content.querySelectorAll("img[srcset], source[srcset]").forEach((el) => {
+      const srcset = el.getAttribute("srcset");
+      if (!srcset) return;
+      const items = srcset.split(",").map((part) => {
+        const [u, d] = part.trim().split(/\s+/, 2);
+        if (/^(?:[a-z]+:|\/\/|#|data:|mailto:|tel:|javascript:)/i.test(u)) return part.trim();
+        return `${new URL(u, baseUrl).toString()}${d ? " " + d : ""}`;
+      });
+      el.setAttribute("srcset", items.join(", "));
+    });
+
     updateHeaderOffsetVar();
     buildTOC();
 
-    // если есть hash — позиционируем быстро и плавно
     if (location.hash) {
       const target = content.querySelector(location.hash);
       if (target) await scrollHeadingIntoViewSmooth(target, 200);
@@ -249,7 +274,6 @@ async function loadLab(urlLike) {
   }
 }
 
-/* ========= 8) Навигация + автозагрузка ========= */
 buttons.forEach((btn) => {
   btn.addEventListener("click", async () => {
     const url = btn.dataset.lab;
