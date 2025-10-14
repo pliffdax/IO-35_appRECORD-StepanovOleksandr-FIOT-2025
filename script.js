@@ -1,3 +1,5 @@
+"use strict";
+
 const content = document.getElementById("content");
 const buttons = document.querySelectorAll("header nav button");
 const tocRoot = document.querySelector("#toc .toc-list");
@@ -7,12 +9,13 @@ const headerEl = document.querySelector("header");
 
 const HEADING_SELECTOR = "h2, h3";
 
-function absolutizeAttr(selector, attr) {
-  content.querySelectorAll(selector).forEach((el) => {
+function absolutizeAttrWithBase(rootEl, selector, attr, base) {
+  rootEl.querySelectorAll(selector).forEach((el) => {
     const val = el.getAttribute(attr);
     if (!val) return;
-    if (/^(?:[a-z]+:|\/\/|#|data:|mailto:|tel:)/i.test(val)) return;
-    el.setAttribute(attr, new URL(val, baseUrl).toString());
+
+    if (/^(?:[a-z]+:|\/\/|#|data:|mailto:|tel:|javascript:)/i.test(val)) return;
+    el.setAttribute(attr, new URL(val, base).toString());
   });
 }
 
@@ -20,18 +23,18 @@ function updateHeaderOffsetVar() {
   const headerH = headerEl?.offsetHeight || 0;
   document.documentElement.style.setProperty("--header-sticky-offset", `${headerH}px`);
 }
-window.addEventListener("resize", () => requestAnimationFrame(updateHeaderOffsetVar));
-window.addEventListener("DOMContentLoaded", () => requestAnimationFrame(updateHeaderOffsetVar));
 
 function showError(msg = "Немає контенту для цієї лабораторної.") {
   content.innerHTML = `<p class="error">${msg}</p>`;
   tocEl?.classList.add("is-hidden");
   layoutEl?.classList.add("layout--no-toc");
 }
+
 function setActiveButton(btn) {
   buttons.forEach((b) => b.classList.remove("active"));
   btn?.classList.add("active");
 }
+
 function ensureId(el) {
   if (!el.id) {
     el.id = el.textContent
@@ -43,49 +46,6 @@ function ensureId(el) {
   }
   return el.id;
 }
-
-function getDynamicAnchorOffset() {
-  const rect = headerEl?.getBoundingClientRect();
-  const base = 20;
-  return rect && rect.bottom > 0 ? Math.round(rect.bottom) + base : base;
-}
-
-let headingsCache = []; // [{ id, absTop }]
-let ticking = false;
-let programmaticScrollLock = false;
-
-function computeHeadingPositions() {
-  headingsCache = [...content.querySelectorAll(HEADING_SELECTOR)].map(h => ({
-    id: h.id,
-    absTop: h.getBoundingClientRect().top + window.scrollY,
-  }));
-}
-
-function onScrollSpy() {
-  if (programmaticScrollLock || ticking) return;
-  ticking = true;
-  requestAnimationFrame(() => {
-    if (!headingsCache.length) { ticking = false; return; }
-
-    const yAdj = window.scrollY + getDynamicAnchorOffset();
-    let current = headingsCache[0].id;
-
-    for (const h of headingsCache) {
-      if (yAdj >= h.absTop) current = h.id; else break;
-    }
-
-    if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 2) {
-      current = headingsCache[headingsCache.length - 1].id;
-    }
-
-    tocRoot.querySelectorAll("a").forEach(a =>
-      a.classList.toggle("active", a.getAttribute("href") === `#${current}`)
-    );
-
-    ticking = false;
-  });
-}
-window.addEventListener("scroll", onScrollSpy, { passive: true });
 
 function getDesiredScrollOffset() {
   const rect = headerEl?.getBoundingClientRect();
@@ -106,7 +66,7 @@ function animateScrollTo(targetY, durationMs = 220) {
     const delta  = targetY - startY;
     const start  = performance.now();
 
-    const easeOutCubic = t => 1 - Math.pow(1 - t, 3);
+    const easeOutCubic = (t) => 1 - Math.pow(1 - t, 3);
 
     function step(now) {
       const elapsed = now - start;
@@ -122,8 +82,8 @@ function animateScrollTo(targetY, durationMs = 220) {
 
 async function scrollHeadingIntoViewSmooth(el, dur = 220) {
   if (!el) return;
-  const offset  = getDesiredScrollOffset();
-  let targetY   = el.getBoundingClientRect().top + window.scrollY - offset;
+  const offset = getDesiredScrollOffset();
+  let targetY  = el.getBoundingClientRect().top + window.scrollY - offset;
 
   const maxY = document.documentElement.scrollHeight - window.innerHeight;
   if (targetY > maxY) targetY = maxY;
@@ -146,6 +106,18 @@ function ensureEndSpacer() {
   }
   return spacer;
 }
+
+let headingsCache = []; // [{ id, absTop }]
+let ticking = false;
+let programmaticScrollLock = false;
+
+function computeHeadingPositions() {
+  headingsCache = [...content.querySelectorAll(HEADING_SELECTOR)].map((h) => ({
+    id: h.id,
+    absTop: h.getBoundingClientRect().top + window.scrollY,
+  }));
+}
+
 function updateLastHeadingSpacer() {
   const spacer = ensureEndSpacer();
   const heads = content.querySelectorAll(HEADING_SELECTOR);
@@ -165,6 +137,33 @@ function updateLastHeadingSpacer() {
   if (need > 0) need += 16;
   spacer.style.height = `${Math.max(0, need)}px`;
 }
+
+function onScrollSpy() {
+  if (programmaticScrollLock || ticking) return;
+  ticking = true;
+  requestAnimationFrame(() => {
+    if (!headingsCache.length) { ticking = false; return; }
+
+    const offset = getDesiredScrollOffset();
+    const yAdj   = window.scrollY + offset;
+    let current  = headingsCache[0].id;
+
+    for (const h of headingsCache) {
+      if (yAdj >= h.absTop) current = h.id; else break;
+    }
+
+    if (window.innerHeight + window.scrollY >= document.body.scrollHeight - 2) {
+      current = headingsCache[headingsCache.length - 1].id;
+    }
+
+    tocRoot.querySelectorAll("a").forEach((a) =>
+      a.classList.toggle("active", a.getAttribute("href") === `#${current}`)
+    );
+
+    ticking = false;
+  });
+}
+window.addEventListener("scroll", onScrollSpy, { passive: true });
 
 function buildTOC() {
   tocRoot.innerHTML = "";
@@ -195,14 +194,18 @@ function buildTOC() {
   tocRoot.querySelectorAll("a").forEach((a) => {
     a.addEventListener("click", (e) => {
       e.preventDefault();
-      const target = document.getElementById(a.getAttribute("href").slice(1));
+      const id = a.getAttribute("href").slice(1);
+      const target = document.getElementById(id);
       if (!target) return;
 
-      tocRoot.querySelectorAll("a").forEach(x => x.classList.remove("active"));
+      tocRoot.querySelectorAll("a").forEach((x) => x.classList.remove("active"));
       a.classList.add("active");
 
       scrollHeadingIntoViewSmooth(target, 220);
-      history.replaceState(null, "", `#${target.id}`);
+
+      const u = new URL(window.location.href);
+      u.hash = id;
+      history.replaceState(null, "", u);
     });
   });
 
@@ -211,12 +214,31 @@ function buildTOC() {
   onScrollSpy();
 }
 
+function afterImagesLoaded() {
+  const imgs = [...content.querySelectorAll("img")];
+  if (!imgs.length) { computeHeadingPositions(); updateLastHeadingSpacer(); onScrollSpy(); return; }
+  let done = 0;
+  const bump = () => {
+    done++;
+    if (done === imgs.length) {
+      computeHeadingPositions();
+      updateLastHeadingSpacer();
+      onScrollSpy();
+    }
+  };
+  imgs.forEach((img) => (img.complete ? bump() : img.addEventListener("load", bump, { once: true })));
+}
+
 async function loadLab(urlLike) {
   content.innerHTML = `<p>Завантаження...</p>`;
 
   let url;
-  try { url = new URL(urlLike, window.location.href).toString(); }
-  catch { return showError("Некоректний шлях до файлу лабораторної."); }
+  try {
+    const baseNoHash = window.location.origin + window.location.pathname;
+    url = new URL(urlLike, baseNoHash).toString();
+  } catch {
+    return showError("Некоректний шлях до файлу лабораторної.");
+  }
 
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 10000);
@@ -233,20 +255,11 @@ async function loadLab(urlLike) {
 
     const baseUrl = new URL(url, location.href);
 
-    function absolutizeAttr(selector, attr) {
-      content.querySelectorAll(selector).forEach((el) => {
-        const val = el.getAttribute(attr);
-        if (!val) return;
-        if (/^(?:[a-z]+:|\/\/|#|data:|mailto:|tel:|javascript:)/i.test(val)) return;
-        el.setAttribute(attr, new URL(val, baseUrl).toString());
-      });
-    }
-
-    absolutizeAttr("img[src]", "src");
-    absolutizeAttr("script[src]", "src");
-    absolutizeAttr("link[href]", "href");
-    absolutizeAttr("a[href]", "href");
-    absolutizeAttr("source[src]", "src");
+    absolutizeAttrWithBase(content, "img[src]", "src", baseUrl);
+    absolutizeAttrWithBase(content, "script[src]", "src", baseUrl);
+    absolutizeAttrWithBase(content, "link[href]", "href", baseUrl);
+    absolutizeAttrWithBase(content, "a[href]", "href", baseUrl);
+    absolutizeAttrWithBase(content, "source[src]", "src", baseUrl);
 
     content.querySelectorAll("img[srcset], source[srcset]").forEach((el) => {
       const srcset = el.getAttribute("srcset");
@@ -261,6 +274,7 @@ async function loadLab(urlLike) {
 
     updateHeaderOffsetVar();
     buildTOC();
+    afterImagesLoaded();
 
     if (location.hash) {
       const target = content.querySelector(location.hash);
@@ -274,38 +288,65 @@ async function loadLab(urlLike) {
   }
 }
 
+content.addEventListener("click", (e) => {
+  const a = e.target.closest("a[href]");
+  if (!a) return;
+
+  const url = new URL(a.getAttribute("href"), window.location.href);
+
+  const sameDoc = url.origin === location.origin && url.pathname === location.pathname;
+  if (sameDoc && url.hash) {
+    e.preventDefault();
+    const target = content.querySelector(url.hash);
+    if (target) {
+      scrollHeadingIntoViewSmooth(target, 220);
+      const u = new URL(window.location.href);
+      u.hash = url.hash.slice(1);
+      history.replaceState(null, "", u);
+    }
+  }
+});
+
+window.addEventListener("resize", () => requestAnimationFrame(updateHeaderOffsetVar));
+window.addEventListener(
+  "resize",
+  () => {
+    if (content.innerHTML.trim()) {
+      computeHeadingPositions();
+      updateLastHeadingSpacer();
+      onScrollSpy();
+    }
+  },
+  { passive: true }
+);
+
+window.addEventListener("DOMContentLoaded", () => {
+  updateHeaderOffsetVar();
+
+  // Autoloading by ?lab=
+  const params = new URLSearchParams(location.search);
+  const lab = params.get("lab") || "1";
+  const targetBtn =
+    Array.from(buttons).find((b) => (b.dataset.lab || "").endsWith(`page${lab}.html`)) || buttons[0];
+
+  setActiveButton(targetBtn);
+  loadLab(targetBtn.dataset.lab);
+});
+
 buttons.forEach((btn) => {
   btn.addEventListener("click", async () => {
     const url = btn.dataset.lab;
     setActiveButton(btn);
 
     const labNum = url.match(/page(\d+)\.html$/)?.[1];
-    const newUrl = new URL(location.href);
-    if (labNum) newUrl.searchParams.set("lab", labNum);
-    else newUrl.searchParams.delete("lab");
-    history.replaceState(null, "", newUrl.toString());
+    const u = new URL(window.location.href);
+
+    if (labNum) u.searchParams.set("lab", labNum);
+    else u.searchParams.delete("lab");
+
+    u.hash = "";
+    history.replaceState(null, "", u);
 
     await loadLab(url);
   });
-});
-
-window.addEventListener("resize", () => {
-  if (content.innerHTML.trim()) {
-    computeHeadingPositions();
-    updateLastHeadingSpacer();
-    onScrollSpy();
-  }
-}, { passive: true });
-
-window.addEventListener("DOMContentLoaded", () => {
-  updateHeaderOffsetVar();
-
-  const params = new URLSearchParams(location.search);
-  const lab = params.get("lab") || "1";
-  const targetBtn =
-    Array.from(buttons).find((b) => (b.dataset.lab || "").endsWith(`page${lab}.html`)) ||
-    buttons[0];
-
-  setActiveButton(targetBtn);
-  loadLab(targetBtn.dataset.lab);
 });

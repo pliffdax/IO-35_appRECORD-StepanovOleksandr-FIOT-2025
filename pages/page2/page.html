@@ -1,0 +1,541 @@
+<section>
+  <h2>Тема, Мета, Місце розташування сайту, звіту</h2>
+
+  <p><strong>Тема:</strong> «Каскадні таблиці стилів. Селектори, ідентифікатори. Стильове оформлення текстових елементів в HTML-документах.»</p>
+
+  <p><strong>Мета:</strong> Набути практичних навичок роботи з каскадними таблицями стилів (CSS), опанувати різні типи селекторів — тегу, класу, ідентифікатора, атрибутні та комбіновані; навчитися оформлювати текстові елементи, таблиці, списки, фони й контури в HTML-документах. Ознайомитися з принципами каскадування та спадкування стилів.</p>
+
+  <h4>Посилання на виконані завдання</h4>
+  <ul>
+    <li>Репозиторій власного веб-застосунку (GitHub):
+      <a href="https://github.com/pliffdax/IO-35_appWEB-StepanovOleksandr-FIOT-2025" target="_blank" rel="noopener">
+        посилання
+      </a>
+    </li>
+    <li>Власний веб-застосунок (Жива сторінка):
+      <a href="https://pliffdax.github.io/IO-35_appWEB-StepanovOleksandr-FIOT-2025/" target="_blank" rel="noopener">
+        посилання
+      </a>
+    </li>
+    <li>Репозиторій звітного HTML-документа (GitHub): 
+      <a href="https://github.com/pliffdax/IO-35_appRECORD-StepanovOleksandr-FIOT-2025" target="_blank" rel="noopener">
+        посилання
+      </a>
+    </li>
+    <li>Звітний HTML-документ (Жива сторінка): 
+      <a href="https://pliffdax.github.io/IO-35_appRECORD-StepanovOleksandr-FIOT-2025/" target="_blank" rel="noopener">
+        посилання
+      </a>
+    </li>
+    <li>Репозиторій самостійної роботи №1 (GitHub): 
+      <a href="https://github.com/pliffdax/IO-35_INDEPENDENT-StepanovOleksandr-FIOT-2025" target="_blank" rel="noopener">
+        посилання
+      </a>
+    </li>
+    <li>Самостійна робота №1 (Жива сторінка): 
+      <a href="https://pliffdax.github.io/IO-35_INDEPENDENT-StepanovOleksandr-FIOT-2025/" target="_blank" rel="noopener">
+        посилання
+      </a>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h2>Способи підключення стилів</h2>
+
+  <p>
+    Існують кілька способів підключення таблиць стилів CSS до HTML-сторінки. Найпоширенішими є:
+    <strong>зовнішні стилі</strong>, <strong>таблиці стилів документу (внутрішні стилі)</strong>
+    та <strong>вбудовані (inline-стилі)</strong>.
+  </p>
+
+  <h4>1. Зовнішні стилі</h4>
+  <p>
+    Застосовуються за допомогою елемента <code>&lt;link&gt;</code>, який розміщують усередині елемента
+    <code>&lt;head&gt;</code>:
+  </p>
+
+  <pre><code>&lt;head&gt;
+  ...
+  &lt;link rel="stylesheet" type="text/css" href="css/style.css"&gt;
+  ...
+&lt;/head&gt;
+</code></pre>
+
+  <p>
+    Коли браузер зустрічає цей тег у HTML-документі, він завантажує вказаний CSS-файл і застосовує стилі,
+    що містяться в ньому. Такий підхід зручний тим, що спільні стилі для декількох сторінок можна винести
+    в окремий файл і підключати його у кожному документі за допомогою тега <code>&lt;link&gt;</code>,
+    не дублюючи CSS-код.
+  </p>
+
+  <h4>2. Таблиці стилів документу (внутрішні стилі)</h4>
+  <p>
+    Такі стилі розташовуються безпосередньо в HTML-документі й застосовуються лише до нього.
+    CSS-правила записуються між тегами <code>&lt;style&gt;</code>, зазвичай у секції
+    <code>&lt;head&gt;</code>:
+  </p>
+
+  <pre><code>&lt;style type="text/css"&gt;
+  p {
+    font-size: 16px;
+    color: #222222;
+  }
+&lt;/style&gt;
+</code></pre>
+
+  <p>
+    Тег <code>&lt;style&gt;</code> дозволяє швидко визначити стилі для окремої сторінки, проте при великій
+    кількості стилів код стає громіздким, тому його зазвичай замінюють зовнішнім CSS-файлом.
+  </p>
+
+  <h4>3. Вбудовані (inline) стилі</h4>
+  <p>
+    Якщо потрібно задати стиль лише для одного елемента, можна скористатися атрибутом
+    <code>style</code> безпосередньо в тегу HTML:
+  </p>
+
+  <pre><code>&lt;p style="color: black"&gt;Абзац із літерами чорного кольору&lt;/p&gt;
+
+&lt;p style="color: white; font-weight: bold"&gt;
+  Абзац із кількома CSS-властивостями
+&lt;/p&gt;
+</code></pre>
+
+  <p>
+    Усередині атрибуту <code>style</code> можна вказати кілька властивостей, розділених крапкою з комою.
+    Inline-стилі зручні для тестування або локальних змін, але не рекомендуються для великих проєктів.
+  </p>
+
+  <h4>Підключення стилів у моїй роботі</h4>
+  <p>
+    Під час розробки власного веб-додатка <strong>«Flower Design»</strong> я застосував метод
+    підключення стилів за допомогою тега <code>&lt;link&gt;</code>.
+    Для цього було створено окремий файл <code>style.css</code>, у якому розміщено всі необхідні
+    CSS-правила для елементів сайту. Після цього тег <code>&lt;link&gt;</code> було додано в секцію
+    <code>&lt;head&gt;</code> HTML-документа, а шлях до файлу вказано в атрибуті <code>href</code>:
+  </p>
+
+  <pre><code>&lt;link rel="stylesheet" href="css/styles.css"&gt;
+</code></pre>
+
+  <p>
+    Такий спосіб дозволив зберігати стилі в окремому файлі, що значно полегшило їх редагування,
+    підтримку та підвищило читабельність коду всього веб-додатка.
+  </p>
+</section>
+
+<section>
+  <h2>СЕЛЕКТОРИ</h2>
+
+  <p>
+    У каскадних таблицях стилів (CSS) селектори визначають, до яких елементів HTML буде застосовано певні стилі.
+    У моїй роботі використано селектори тегів, класів, ідентифікаторів, а також комбіновані, атрибутні та з
+    псевдокласами/псевдоелементами. Нижче наведено приклади з реального CSS цього проєкту.
+  </p>
+
+  <h3>Селектори тегу</h3>
+  <p>
+    Селектори тегів застосовуються до всіх елементів певного типу. У цьому проєкті вони використовуються для
+    базового оформлення сторінки.
+  </p>
+
+  <pre><code>body {
+  margin: 0;
+  font-family: "Source Code Pro", "Segoe UI", sans-serif;
+}</code></pre>
+
+  <p>Це задає системний шрифт та скидає зовнішні відступи документа.</p>
+
+  <figure>
+    <img class="img-lg" src="assets/selector-tag.png" alt="Базове оформлення тіла сторінки (body)"/>
+    <figcaption>Рис. 1 — Селектор тегу: базові стилі для <code>&lt;body&gt;</code>.</figcaption>
+  </figure>
+
+  <h3>Селектори класу</h3>
+  <p>
+    Класові селектори застосовуються до груп елементів, яким потрібне однакове оформлення.
+  </p>
+
+  <pre><code>.main-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: var(--gap);
+}
+
+.main-nav a {
+  position: relative;
+  display: inline-block;
+  padding: 6px 0;
+  color: var(--text);
+  text-decoration: none;
+  font-weight: 500;
+  transition: all 0.2s ease;
+}</code></pre>
+
+  <p>Тут клас <code>.main-nav</code> керує зовнішнім виглядом списку навігації та посилань у ньому.</p>
+
+  <figure>
+    <img src="assets/selector-class.png" alt="Оформлення меню навігації через клас .main-nav" width="800" />
+    <figcaption>Рис. 2 — Селектори класу: список і посилання в головному меню.</figcaption>
+  </figure>
+
+  <h3>Селектори ідентифікаторів</h3>
+  <p>
+    Ідентифікатор використовується для унікальних секцій сторінки (hero, каталог, відгуки).
+  </p>
+
+  <pre><code>#hero {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 80px 0;
+  background-color: #fff;
+}
+
+#catalog {
+  padding: 0 60px 60px;
+  background: #fff;
+}
+
+#feedback {
+  padding: 60px 0 0;
+  background: #EEF2FA;
+}</code></pre>
+
+  <p>Так швидко налаштовується макет великих блоків сторінки.</p>
+
+  <figure>
+    <img src="assets/selector-id.png" alt="Секції hero, catalog, feedback з оформленням через ID" width="800" />
+    <figcaption>Рис. 3 — Селектори ідентифікаторів: розкладка та фон секцій.</figcaption>
+  </figure>
+
+  <h3>Інші селектори</h3>
+
+  <h4>1. Комбіновані селектори</h4>
+  <p>Комбіновані селектори звертаються до вкладених елементів та їхніх станів.</p>
+
+  <pre><code>.category .btn {
+  position: absolute;
+  bottom: 28px;
+  left: 50%;
+  transform: translateX(-50%);
+  background: var(--header-bg);
+  color: #fff;
+  font-weight: 600;
+}
+
+#catalog > h2 {
+  margin: 0 0 24px;
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2f2b2b;
+}</code></pre>
+
+  <p>
+    У першому прикладі селектор звертається до елемента з класом <code>.btn</code> всередині блоку
+    <code>.category</code>. У другому — оформлюється заголовок, який є безпосередньою дитиною секції <code>#catalog</code>.
+  </p>
+
+  <figure>
+    <img src="assets/selector-combined.png" alt="Кнопка в категоріях та заголовок каталогу" width="800" />
+    <figcaption>Рис. 4 — Комбіновані селектори: <code>.category .btn</code> та <code>#catalog &gt; h2</code>.</figcaption>
+  </figure>
+
+  <h4>2. Атрибутні селектори</h4>
+  <p>Атрибутні селектори вибирають елементи за значенням атрибуту.</p>
+
+  <pre><code>.main-nav a[aria-current="page"] {
+  font-weight: 700;
+}
+.main-nav a[aria-current="page"]::after {
+  opacity: 1;
+  transform: scaleX(1);
+}</code></pre>
+
+  <p>Це підсвічує активний пункт меню без додаткових класів.</p>
+
+  <figure>
+    <img src="assets/selector-attr.png" alt="Активний пункт меню за aria-current" width="800" />
+    <figcaption>Рис. 5 — Атрибутний селектор для позначення активної сторінки.</figcaption>
+  </figure>
+
+  <h4>3. Псевдокласи та псевдоелементи</h4>
+  <p>Використовуються для станів та декоративних елементів без зміни HTML.</p>
+
+  <pre><code>.main-nav a::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -3px;
+  height: 2px;
+  background: var(--underline);
+  opacity: 0;
+  transform: scaleX(0.6);
+  transition: opacity 0.2s ease, transform 0.2s ease;
+}
+.main-nav a:hover::after {
+  opacity: 1;
+  transform: scaleX(1);
+}
+
+.feedback-form button:hover {
+  box-shadow: 0 6px 14px rgba(0,0,0,.2);
+  transform: translateY(-1px);
+}
+
+.feedback-form input::placeholder,
+.feedback-form textarea::placeholder {
+  color: #8a8fa3;
+  opacity: 1;
+}</code></pre>
+
+  <p>Підкреслення посилання при наведенні та стилізація плейсхолдерів реалізовані без додаткової розмітки.</p>
+
+  <figure>
+    <img src="assets/selector-pseudo.png" alt="Hover-ефект у меню та стилізація placeholder" width="800" />
+    <figcaption>Рис. 6 — Псевдокласи і псевдоелементи у меню та формі.</figcaption>
+  </figure>
+
+  <h4>4. Використання змінних (custom properties)</h4>
+  <p>
+    Змінні у <code>:root</code> дозволяють централізовано керувати кольорами, відступами та тінями і перевикористовувати їх у різних місцях.
+  </p>
+
+  <pre><code>:root {
+  --header-bg: #b9c7e6;
+  --header-shadow: rgba(0, 0, 0, 0.15);
+  --text: #ffffff;
+  --underline: #ffffff;
+  --gap: 72px;
+}
+
+.site-header {
+  background: var(--header-bg);
+  box-shadow: 0 4px 8px var(--header-shadow);
+}</code></pre>
+
+  <p>Шапка сайту наслідує кольори й тіні без хардкоду значень у кожному правилі.</p>
+
+  <figure>
+    <img src="assets/selector-root.png" alt="Шапка сайту з кольорами з :root" width="800" />
+    <figcaption>Рис. 7 — CSS-змінні: застосування у шапці.</figcaption>
+  </figure>
+
+  <h4>5. Комбінація класу з тегом (на прикладі зображень)</h4>
+  <p>У проєкті немає глобальних стилів для всіх <code>&lt;img&gt;</code>, натомість стилізуються конкретні випадки:</p>
+
+  <pre><code>.logo img {
+  display: block;
+  height: 48px;
+  width: auto;
+}
+
+.category img {
+  display: block;
+  width: 100%;
+  height: auto;
+}</code></pre>
+
+  <p>Це дозволяє точно керувати відображенням логотипу та зображень у категоріях без впливу на інші картинки.</p>
+
+  <figure>
+    <img src="assets/selector-class-tag.png" alt="Стилізація зображень логотипу та категорій" width="800" />
+    <figcaption>Рис. 8 — Комбінований селектор (клас + тег): <code>.logo img</code> і <code>.category img</code>.</figcaption>
+  </figure>
+
+  <p><strong>Підсумок:</strong> використано повний набір базових селекторів і їхніх комбінацій, що забезпечує охайну структуру стилів та зручну підтримку.</p>
+</section>
+
+<section>
+  <h2>CSS: Шрифти, Текст, Таблиці, Фон, Контур, Списки, CSS просунутий</h2>
+
+  <h4>Шрифти і текст</h4>
+  <p>
+    У проєкті підключено шрифт <code>Source Code Pro</code> з Google Fonts і застосовано до тіла сторінки.
+    Заголовки й описи у hero-блоці мають збільшений розмір та міжрядковий інтервал для читабельності.
+  </p>
+
+  <pre><code>/* HTML (у &lt;head&gt;) */
+&lt;link href="https://fonts.googleapis.com/css2?family=Source+Code+Pro:wght@400;600&amp;display=swap" rel="stylesheet"&gt;
+
+/* CSS */
+body {
+  margin: 0;
+  font-family: "Source Code Pro", "Segoe UI", sans-serif;
+}
+
+.hero-text h2 {
+  font-size: 2rem;
+  font-weight: 700;
+  color: #2f2b2b;
+  line-height: 1.3;
+  margin-bottom: 20px;
+}
+
+.hero-text p {
+  font-size: 1.05rem;
+  color: #5e5e5e;
+  line-height: 1.6;
+}</code></pre>
+
+  <h4>Фон</h4>
+  <p>
+    Для шапки сайту використано фоновий колір і тінь з custom-properties. Секції каталогу/відгуків мають контрастний фон.
+  </p>
+
+  <pre><code>:root {
+  --header-bg: #b9c7e6;
+  --header-shadow: rgba(0, 0, 0, 0.15);
+}
+
+.site-header {
+  background: var(--header-bg);
+  box-shadow: 0 4px 8px var(--header-shadow);
+}
+
+#catalog { background: #fff; }
+#feedback { background: #EEF2FA; }</code></pre>
+
+  <h4>Контур/рамка та стани елементів</h4>
+  <p>
+    Поля форми мають м’які рамки і фон. Кнопка отримує тінь і невелике підняття при наведенні.
+  </p>
+
+  <pre><code>.feedback-form input,
+.feedback-form textarea {
+  width: 100%;
+  border: 1px solid #d7deee;
+  border-radius: 8px;
+  padding: 12px 14px;
+  background: rgba(185,199,230,.25);
+  color: #2f2b2b;
+  font: inherit;
+  outline: none;
+}
+
+.feedback-form button {
+  background: #FFC2C7;
+  color: #fff;
+  border: 0;
+  border-radius: 8px;
+  padding: 12px 32px;
+  font-weight: 500;
+  box-shadow: 0 4px 10px rgba(0,0,0,.18);
+  transition: box-shadow .1s ease, transform .1s ease;
+}
+
+.feedback-form button:hover {
+  box-shadow: 0 6px 14px rgba(0,0,0,.2);
+  transform: translateY(-1px);
+}</code></pre>
+
+  <h4>Таблиці / Каталог</h4>
+  <p>
+    У якості сучасної альтернативи таблиці використано гнучку сітку карток товарів (flex-layout) з тінями та hover-ефектом.
+  </p>
+
+  <pre><code>.catalog-grid{
+  display: flex;
+  flex-wrap: wrap;
+  gap: 28px;
+}
+
+.catalog-item{
+  flex: 1 1 calc((100% - 2 * 28px) / 3);
+  background: #fff;
+  border-radius: 8px;
+  overflow: hidden;
+  box-shadow:
+    0 6px 14px rgba(0,0,0,0.08),
+    0 10px 20px rgba(255,105,135,0.18);
+  transition: transform .15s ease, box-shadow .15s ease;
+}
+
+.catalog-item:hover{
+  transform: translateY(-2px);
+  box-shadow:
+    0 10px 20px rgba(0,0,0,0.1),
+    0 14px 26px rgba(255,105,135,0.22);
+}</code></pre>
+
+  <details>
+    <summary>Опційно: приклад базової таблиці</summary>
+    <pre><code>table.demo {
+  width: 100%;
+  border-collapse: collapse;
+}
+table.demo th, table.demo td {
+  border: 1px solid #e5e7ef;
+  padding: 10px 12px;
+  text-align: left;
+}
+table.demo thead th {
+  background: #f6f7fc;
+  font-weight: 700;
+}</code></pre>
+  </details>
+
+  <h4>Списки</h4>
+  <p>
+    Головне меню реалізовано як список без маркерів, вирівняний у ряд і з проміжками через CSS-змінну <code>--gap</code>.
+  </p>
+
+  <pre><code>.main-nav ul {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  gap: var(--gap);
+}
+.main-nav a {
+  position: relative;
+  color: var(--text);
+  text-decoration: none;
+}
+.main-nav a::after { /* підкреслення при наведенні */
+  content: "";
+  position: absolute;
+  left: 0; right: 0; bottom: -3px;
+  height: 2px; background: var(--underline);
+  opacity: 0; transform: scaleX(0.6);
+  transition: opacity .2s ease, transform .2s ease;
+}
+.main-nav a:hover::after { opacity: 1; transform: scaleX(1); }</code></pre>
+
+  <h4>CSS просунутий</h4>
+  <p>
+    Використано плавні переходи, тіні, псевдоелементи для підкреслення посилань та адаптивність через media-запити.
+  </p>
+
+  <pre><code>/* Переходи та псевдоелементи у меню */
+.main-nav a { transition: all 0.2s ease; }
+.main-nav a::after {
+  content: ""; position: absolute; left:0; right:0; bottom:-3px; height:2px;
+  background: var(--underline); opacity:0; transform: scaleX(0.6);
+  transition: opacity .2s ease, transform .2s ease;
+}
+.main-nav a:hover::after { opacity:1; transform: scaleX(1); }
+
+/* Hover-ефекти на картках каталогу */
+.catalog-item { transition: transform .15s ease, box-shadow .15s ease; }
+.catalog-item:hover { transform: translateY(-2px); }
+
+/* Адаптивність блоків features */
+@media (max-width: 1100px){ .feature{ width: 31%; margin: 1% 1%; } }
+@media (max-width: 900px){  .feature{ width: 47%; margin: 1.5% 1.5%; } }
+@media (max-width: 600px){  .feature{ width: 100%; margin: 8px 0; } }</code></pre>
+
+  <p><strong>Підсумок:</strong> у проєкті застосовано єдиний шрифт, типографіку, контрастні фони, акуратні рамки і тіні,
+  сучасну сітку каталогу, семантичні списки та прийоми просунутого CSS (transition, псевдоелементи, адаптивність),
+  що забезпечує зручність читання і приємний візуальний досвід.</p>
+</section>
+
+<section>
+  <h2>Висновки</h2>
+
+  <p>
+    У ході оформлення звіту для лабораторної роботи №2 було продемонстровано практичне використання каскадних таблиць стилів (CSS) для створення структурованого та естетичного веб-дизайну. У межах проєкту «Flower Design» реалізовано всі основні способи підключення стилів, використано різні типи селекторів — тегу, класу, ідентифікатора, комбіновані, атрибутні, а також селектори з псевдокласами та псевдоелементами. Наведені приклади та скриншоти ілюструють застосування властивостей шрифтів, кольорів, фону, контурів, списків і гнучкої сітки каталогу. Звіт оформлено з використанням сучасних прийомів CSS — змінних, тіней, плавних переходів і адаптивної верстки, що забезпечує цілісність, зручність сприйняття та придатність до публікації.
+  </p>
+</section>
