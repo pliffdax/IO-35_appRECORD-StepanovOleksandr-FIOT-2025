@@ -1,0 +1,471 @@
+<section>
+  <h2>Тема, Мета, Місце розташування сайту, звіту</h2>
+
+  <p><strong>Тема:</strong> «Верстка веб-сторінки засобами CSS і Flexbox.»</p>
+
+  <p><strong>Мета:</strong> Набути навичок створення гнучких макетів сторінок із використанням технології Flexbox, виконати структурну верстку компонентів сайту, реалізувати головну сторінку, навігацію, hero-секцію, категорії, каталог, футер тощо.</p>
+
+  <h4>Посилання на виконані завдання</h4>
+  <ul>
+    <li>Репозиторій власного веб-застосунку (GitHub):
+      <a href="https://github.com/pliffdax/IO-35_appWEB-StepanovOleksandr-FIOT-2025" target="_blank" rel="noopener">
+        посилання
+      </a>
+    </li>
+    <li>Власний веб-застосунок (Жива сторінка):
+      <a href="https://pliffdax.github.io/IO-35_appWEB-StepanovOleksandr-FIOT-2025/" target="_blank" rel="noopener">
+        посилання
+      </a>
+    </li>
+    <li>Репозиторій звітного HTML-документа (GitHub): 
+      <a href="https://github.com/pliffdax/IO-35_appRECORD-StepanovOleksandr-FIOT-2025" target="_blank" rel="noopener">
+        посилання
+      </a>
+    </li>
+    <li>Звітний HTML-документ (Жива сторінка): 
+      <a href="https://pliffdax.github.io/IO-35_appRECORD-StepanovOleksandr-FIOT-2025/" target="_blank" rel="noopener">
+        посилання
+      </a>
+    </li>
+    <li>Репозиторій самостійної роботи №1 (GitHub): 
+      <a href="https://github.com/pliffdax/IO-35_INDEPENDENT-StepanovOleksandr-FIOT-2025" target="_blank" rel="noopener">
+        посилання
+      </a>
+    </li>
+    <li>Самостійна робота №1 (Жива сторінка): 
+      <a href="https://pliffdax.github.io/IO-35_INDEPENDENT-StepanovOleksandr-FIOT-2025/" target="_blank" rel="noopener">
+        посилання
+      </a>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h2>Семантична структура сторінки</h2>
+
+  <p>
+    Для побудови каркаса використано семантичні елементи HTML5:
+    <code>&lt;header&gt;</code>, <code>&lt;main&gt;</code>, <code>&lt;section&gt;</code>, <code>&lt;footer&gt;</code>.
+    Це підвищує доступність і зрозумілість розмітки для пошукових систем та assistive-технологій.
+  </p>
+
+  <pre><code>&lt;header class="site-header"&gt;...&lt;/header&gt;
+
+&lt;main&gt;
+  &lt;section id="hero"&gt;...&lt;/section&gt;
+  &lt;section id="categories"&gt;...&lt;/section&gt;
+  &lt;section id="catalog"&gt;...&lt;/section&gt;
+&lt;/main&gt;
+
+&lt;footer id="contacts"&gt;...&lt;/footer&gt;
+</code></pre>
+
+  <figure>
+    <img class="img-lg" src="assets/structure.png" alt="Семантична структура сторінки Flower Design">
+    <figcaption>Рис. 1 — Семантична структура HTML-документа із секціями <code>&lt;header&gt;</code>, <code>&lt;main&gt;</code> та <code>&lt;footer&gt;</code>.</figcaption>
+  </figure>
+
+  <p>
+    Кожен розділ групує логічно споріднений контент (hero, категорії, каталог, контакти),
+    що спрощує підтримку та адаптивну верстку.
+  </p>
+</section>
+
+<section>
+  <h2>Способи підключення стилів</h2>
+
+  <p>
+    Існують кілька способів підключення таблиць стилів CSS до HTML-сторінки. Найпоширенішими є:
+    <strong>зовнішні стилі</strong>, <strong>таблиці стилів документу (внутрішні стилі)</strong>
+    та <strong>вбудовані (inline-стилі)</strong>.
+  </p>
+
+  <h4>1. Зовнішні стилі</h4>
+  <p>
+    Застосовуються за допомогою елемента <code>&lt;link&gt;</code>, який розміщують усередині елемента
+    <code>&lt;head&gt;</code>:
+  </p>
+
+  <pre><code>&lt;head&gt;
+  ...
+  &lt;link rel="stylesheet" type="text/css" href="css/style.css"&gt;
+  ...
+&lt;/head&gt;
+</code></pre>
+
+  <p>
+    Коли браузер зустрічає цей тег у HTML-документі, він завантажує вказаний CSS-файл і застосовує стилі,
+    що містяться в ньому. Такий підхід зручний тим, що спільні стилі для декількох сторінок можна винести
+    в окремий файл і підключати його у кожному документі за допомогою тега <code>&lt;link&gt;</code>,
+    не дублюючи CSS-код.
+  </p>
+
+  <h4>2. Таблиці стилів документу (внутрішні стилі)</h4>
+  <p>
+    Такі стилі розташовуються безпосередньо в HTML-документі й застосовуються лише до нього.
+    CSS-правила записуються між тегами <code>&lt;style&gt;</code>, зазвичай у секції
+    <code>&lt;head&gt;</code>:
+  </p>
+
+  <pre><code>&lt;style type="text/css"&gt;
+  p {
+    font-size: 16px;
+    color: #222222;
+  }
+&lt;/style&gt;
+</code></pre>
+
+  <p>
+    Тег <code>&lt;style&gt;</code> дозволяє швидко визначити стилі для окремої сторінки, проте при великій
+    кількості стилів код стає громіздким, тому його зазвичай замінюють зовнішнім CSS-файлом.
+  </p>
+
+  <h4>3. Вбудовані (inline) стилі</h4>
+  <p>
+    Якщо потрібно задати стиль лише для одного елемента, можна скористатися атрибутом
+    <code>style</code> безпосередньо в тегу HTML:
+  </p>
+
+  <pre><code>&lt;p style="color: black"&gt;Абзац із літерами чорного кольору&lt;/p&gt;
+
+&lt;p style="color: white; font-weight: bold"&gt;
+  Абзац із кількома CSS-властивостями
+&lt;/p&gt;
+</code></pre>
+
+  <p>
+    Усередині атрибуту <code>style</code> можна вказати кілька властивостей, розділених крапкою з комою.
+    Inline-стилі зручні для тестування або локальних змін, але не рекомендуються для великих проєктів.
+  </p>
+
+  <h4>Підключення стилів у моїй роботі</h4>
+  <p>
+    Під час розробки власного веб-додатка <strong>«Flower Design»</strong> я застосував метод
+    підключення стилів за допомогою тега <code>&lt;link&gt;</code>.
+    Для цього було створено окремий файл <code>style.css</code>, у якому розміщено всі необхідні
+    CSS-правила для елементів сайту. Після цього тег <code>&lt;link&gt;</code> було додано в секцію
+    <code>&lt;head&gt;</code> HTML-документа, а шлях до файлу вказано в атрибуті <code>href</code>:
+  </p>
+
+  <pre><code>&lt;link rel="stylesheet" href="css/styles.css"&gt;
+</code></pre>
+
+  <p>
+    Такий спосіб дозволив зберігати стилі в окремому файлі, що значно полегшило їх редагування,
+    підтримку та підвищило читабельність коду всього веб-додатка.
+  </p>
+</section>
+
+<section>
+  <h2>Шапка та навігація: Flexbox і бургер-меню</h2>
+
+  <p>
+    Верхня панель реалізована на Flexbox: логотип та кнопка бургера вирівнюються по краях,
+    а навігація на мобільних розкривається під шапкою. Кнопка керує атрибутом
+    <code>aria-expanded</code> та станом <code>data-state</code> у навігації.
+  </p>
+
+  <h4>HTML</h4>
+  <pre><code>&lt;header class="site-header"&gt;
+  &lt;div class="container"&gt;
+    &lt;a class="logo" href="index.html"&gt;
+      &lt;img src="assets/images/logo.png" alt="Flower Design logo"&gt;
+    &lt;/a&gt;
+
+    &lt;button class="burger" aria-label="Меню" aria-expanded="false"&gt;
+      &lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;&lt;span&gt;&lt;/span&gt;
+    &lt;/button&gt;
+
+    &lt;nav class="main-nav" aria-label="Головна навігація" data-state="closed"&gt;
+      &lt;ul&gt;
+        &lt;li&gt;&lt;a href="index.html" aria-current="page"&gt;Каталог&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="about.html"&gt;Про нас&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="#custom"&gt;Збери букет&lt;/a&gt;&lt;/li&gt;
+        &lt;li&gt;&lt;a href="#contacts"&gt;Контакти&lt;/a&gt;&lt;/li&gt;
+      &lt;/ul&gt;
+    &lt;/nav&gt;
+  &lt;/div&gt;
+&lt;/header&gt;
+</code></pre>
+
+  <h4>CSS (фрагмент)</h4>
+  <pre><code>@media (max-width: 900px) {
+  .site-header { position: sticky; top: 0; z-index: 100; }
+  .site-header .container {
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 8px 16px; min-height: 64px; position: relative;
+  }
+  .burger { display: inline-flex; position: relative; inline-size: 40px; block-size: 40px; margin-left: auto; }
+  .burger span { position: absolute; inset-inline: 8px; block-size: 2px; background: currentColor; }
+  .main-nav {
+    position: absolute; left: 0; right: 0; top: 100%;
+    background: #0b1020; border-top: 1px solid #1f2a44;
+    transform: translateY(-120%); transition: transform .3s ease, opacity .2s ease;
+    opacity: 0; pointer-events: none; z-index: 105;
+  }
+  .main-nav[data-state="open"] { transform: translateY(0); opacity: 1; pointer-events: auto; }
+}
+</code></pre>
+
+  <h4>JavaScript (логіка перемикання)</h4>
+  <pre><code>(function(){
+  const btn = document.querySelector('.burger');
+  const nav = document.querySelector('.main-nav');
+  if(!btn || !nav) return;
+
+  function toggle(){
+    const open = btn.getAttribute('aria-expanded') === 'true';
+    btn.setAttribute('aria-expanded', String(!open));
+    nav.dataset.state = open ? 'closed' : 'open';
+    document.body.style.overflow = (!open && matchMedia('(max-width:900px)').matches) ? 'hidden' : '';
+  }
+  btn.addEventListener('click', toggle);
+  nav.addEventListener('click', e =&gt; {
+    if(e.target.closest('a')) { btn.setAttribute('aria-expanded','false'); nav.dataset.state='closed'; document.body.style.overflow=''; }
+  });
+  addEventListener('resize', () =&gt; {
+    if (matchMedia('(min-width:901px)').matches) { document.body.style.overflow=''; nav.dataset.state='closed'; btn.setAttribute('aria-expanded','false'); }
+  });
+})();
+</code></pre>
+
+  <figure>
+    <img class="img-lg" src="assets/header-desktop.png" alt="Шапка сайту на десктопі">
+    <figcaption>Рис. 2 — Вигляд шапки сайту та горизонтальної навігації на десктопі.</figcaption>
+  </figure>
+
+  <figure>
+    <img class="img-lg" src="assets/header-mobile.png" alt="Бургер-меню на мобільному">
+    <figcaption>Рис. 3 — Розкрите бургер-меню на мобільному пристрої.</figcaption>
+  </figure>
+
+  <p>
+    На мобільних пристроях меню розкривається плавно під шапкою, блокує прокручування фону
+    та закривається по кліку на пункт навігації. На десктопі відображається звичайна горизонтальна
+    навігація без бургера.
+  </p>
+</section>
+
+<section>
+  <h2>Hero-секція: компоновка на Flexbox</h2>
+
+  <p>
+    Головний блок сторінки (#hero) реалізовано як гнучку секцію з двома підблоками:
+    зображення та текст. На десктопі вони розташовані поруч, а на мобільних — вертикально,
+    причому зображення відображається зверху, а текст — під ним.
+  </p>
+
+  <h4>HTML</h4>
+  <pre><code>&lt;section id="hero"&gt;
+  &lt;div class="hero-text"&gt;
+    &lt;h2&gt;Букет із кущових троянд "Довгоочікуване щастя"&lt;/h2&gt;
+    &lt;p&gt;Ніжний та витончений шик у букеті з троянд — гарний вибір для коханої людини&lt;/p&gt;
+  &lt;/div&gt;
+  &lt;div class="hero-image"&gt;
+    &lt;img src="assets/images/bouquet-desktop.jpg" alt="Букет із троянд"&gt;
+  &lt;/div&gt;
+&lt;/section&gt;
+</code></pre>
+
+  <h4>CSS (фрагмент)</h4>
+  <pre><code>#hero{display:flex;align-items:center;justify-content:space-between;gap:24px;padding:60px 0}
+#hero .hero-text{max-width:520px}
+#hero .hero-image img{display:block;width:100%;height:auto}
+
+@media (max-width:900px){
+  #hero{flex-direction:column;align-items:center;justify-content:flex-start;text-align:center;padding:20px 16px 40px}
+  #hero .hero-image{order:-1;display:flex;justify-content:center;align-items:flex-start;max-width:420px;width:100%}
+  #hero .hero-text{margin-top:20px;padding:0 8px}
+}
+</code></pre>
+
+  <p>
+    Завдяки Flexbox макет легко адаптується під різні екрани без дублювання розмітки.
+  </p>
+</section>
+
+<section>
+  <h2>Блок «Категорії»: картки з кнопками</h2>
+
+  <p>
+    Для категорій використано прості картки з фоновим зображенням та кнопкою дії.
+    На мобільних пристроях кнопка залишається всередині зображення, прижата до нижнього краю.
+  </p>
+
+  <h4>HTML</h4>
+  <pre><code>&lt;section id="categories"&gt;
+  &lt;div class="category"&gt;
+    &lt;img src="assets/images/bouquets.png" alt="Букети"&gt;
+    &lt;a class="btn" href="#"&gt;Букети&lt;/a&gt;
+  &lt;/div&gt;
+  &lt;div class="category"&gt;
+    &lt;img src="assets/images/natural_flowers.png" alt="Живі квіти"&gt;
+    &lt;a class="btn" href="#"&gt;Живі квіти&lt;/a&gt;
+  &lt;/div&gt;
+  &lt;div class="category"&gt;
+    &lt;img src="assets/images/own_bouquet.png" alt="Створи свій букет"&gt;
+    &lt;a class="btn" href="#"&gt;Свій букет&lt;/a&gt;
+  &lt;/div&gt;
+&lt;/section&gt;
+</code></pre>
+
+  <h4>CSS (фрагмент)</h4>
+  <pre><code>#categories{text-align:center;padding:60px 0;background:#fff}
+.category{display:inline-block;width:25%;margin:0 1.5%;position:relative;border-radius:8px;overflow:hidden}
+.category img{display:block;width:100%;height:auto}
+.category .btn{position:absolute;left:50%;bottom:28px;transform:translateX(-50%);width:160px;padding:12px 0;font-weight:600;color:#fff;background:var(--header-bg);border-radius:6px}
+
+@media (max-width:900px){
+  .category{display:block;width:90%;margin:0 auto 24px}
+  .category .btn{bottom:16px;width:140px;padding:10px 0;font-size:.95rem}
+}
+</code></pre>
+
+  <figure>
+    <img class="img-lg" src="assets/categories-desktop.png" alt="Блок категорій на десктопі">
+    <figcaption>Рис. 4 — Категорії з кнопками на десктопній версії сайту.</figcaption>
+  </figure>
+
+  <figure>
+    <img class="img-lg" src="assets/categories-mobile.png" alt="Категорії на мобільному">
+    <figcaption>Рис. 5 — Категорії на мобільній версії (картки по одній у стовпчик).</figcaption>
+  </figure>
+
+
+  <p>
+    Кнопки залишаються читабельними на будь-якій ширині, а картки стають вертикальними на мобільних.
+  </p>
+</section>
+
+<section>
+  <h2>Каталог: адаптивна сітка (CSS Grid)</h2>
+
+  <p>
+    Для каталогу застосовано CSS Grid із обмеженням максимум у три колонки на широких екранах.
+    На середніх ширинах сітка автоматично переходить у дві колонки, а на мобільних — в одну.
+  </p>
+
+  <h4>HTML</h4>
+  <pre><code>&lt;section id="catalog"&gt;
+  &lt;h2&gt;Каталог&lt;/h2&gt;
+  &lt;div class="catalog-grid"&gt;
+    &lt;div class="catalog-item"&gt;
+      &lt;img src="assets/images/bouquet_cart1.png" alt="Ніжна свіжість"&gt;
+      &lt;h3&gt;Ніжна свіжість&lt;/h3&gt;
+      &lt;div class="catalog-meta"&gt;
+        &lt;p class="desc"&gt;Троянди та лілії&lt;/p&gt;
+        &lt;p class="price"&gt;445&nbsp;грн&lt;/p&gt;
+      &lt;/div&gt;
+    &lt;/div&gt;
+    &lt;!-- інші картки --&gt;
+  &lt;/div&gt;
+&lt;/section&gt;
+</code></pre>
+
+  <h4>CSS (фрагмент)</h4>
+  <pre><code>.catalog-grid{
+  display:grid;
+  grid-template-columns:repeat(3,1fr); /* максимум 3 в ряд */
+  gap:28px;
+  width:90%;
+  max-width:1200px;
+  margin:0 auto;
+}
+@media (max-width:1200px){
+  .catalog-grid{grid-template-columns:repeat(auto-fit,minmax(260px,1fr));}
+}
+@media (max-width:900px){
+  .catalog-grid{grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
+}
+.catalog-item img{display:block;width:100%;height:220px;object-fit:cover}
+.catalog-meta{display:flex;justify-content:space-between;align-items:baseline;margin:6px 16px 16px}
+.catalog-meta .price{white-space:nowrap}
+</code></pre>
+
+  <figure>
+    <img class="img-lg" src="assets/catalog-grid.png" alt="Каталог букетів">
+    <figcaption>Рис. 6 — Сітка каталогу з трьома колонками на широких екранах.</figcaption>
+  </figure>
+
+  <p>
+    Завдяки <code>minmax()</code> і <code>auto-fit</code> сітка лишається стабільною без «дір» та
+    зберігає однакову ширину карток.
+  </p>
+</section>
+
+<section>
+  <h2>Футер: колонки та адаптація</h2>
+
+  <p>
+    Нижній колонтитул складається з логотипа та трьох колонок із контактами/посиланнями.
+    На мобільних колонки лишаються в один ряд, але текст усередині вирівнюється ліворуч, а логотип — знизу по центру.
+  </p>
+
+  <h4>HTML</h4>
+  <pre><code>&lt;footer id="contacts"&gt;
+  &lt;div class="footer-container"&gt;
+    &lt;div class="footer-left"&gt;
+      &lt;div class="logo"&gt;&lt;img src="assets/images/logo.png" alt="Flower Design logo"&gt;&lt;/div&gt;
+      &lt;p&gt;Copyright © 2025&lt;/p&gt;
+    &lt;/div&gt;
+    &lt;div class="footer-right"&gt;
+      &lt;div class="footer-column"&gt;...&lt;/div&gt;
+      &lt;div class="footer-column"&gt;...&lt;/div&gt;
+      &lt;div class="footer-column"&gt;...&lt;/div&gt;
+    &lt;/div&gt;
+  &lt;/div&gt;
+&lt;/footer&gt;
+</code></pre>
+
+  <h4>CSS (фрагмент)</h4>
+  <pre><code>#contacts{background:var(--header-bg);color:#fff;padding:40px 80px 36px}
+.footer-container{display:flex;justify-content:space-between;align-items:flex-start}
+.footer-left{display:flex;flex-direction:column;width:25%}
+.footer-right{display:flex;justify-content:space-between;width:65%}
+
+@media (max-width:900px){
+  #contacts{padding:24px 16px 20px}
+  .footer-container{flex-direction:column;gap:24px}
+  .footer-right{order:1;display:flex;justify-content:space-around;align-items:flex-start;flex-wrap:wrap;gap:16px}
+  .footer-column{width:30%;text-align:left}
+  .footer-left{order:2;align-items:center;width:100%}
+  .footer-left .logo img{height:56px;margin:8px auto 0;display:block}
+}
+</code></pre>
+
+  <figure>
+    <img class="img-lg" src="assets/footer-desktop.png" alt="Футер на десктопі">
+    <figcaption>Рис. 7 — Футер з логотипом та трьома колонками посилань на десктопі.</figcaption>
+  </figure>
+
+  <figure>
+    <img class="img-lg" src="assets/footer-mobile.png" alt="Футер на мобільному">
+    <figcaption>Рис. 8 — Адаптивний футер на мобільному (логотип по центру, текст ліворуч).</figcaption>
+  </figure>
+
+  <p>
+    Така розкладка зручна для читання на мобільних і зберігає структуру на десктопах.
+  </p>
+</section>
+
+<section>
+  <h2>Результати роботи</h2>
+
+  <p>
+    Головна сторінка сайту «Flower Design» зверстана семантично, підтримує адаптивність:
+    бургер-меню на мобільних, вертикальний hero-блок, картки категорій з кнопками,
+    каталог на CSS Grid із обмеженням до трьох колонок та адаптивний футер.
+    Інтерфейс коректно відображається в діапазоні від мобільних пристроїв до десктопів.
+  </p>
+</section>
+
+<section>
+  <h2>Висновки</h2>
+
+  <p>
+    У процесі виконання роботи я опанувала верстку на Flexbox та CSS Grid, навчилася будувати
+    адаптивні компоненти інтерфейсу з медіа-запитами. Реалізувала семантичну структуру сторінки,
+    мобільне бургер-меню та гнучкі сітки для контенту. Отриманий результат є зручним для підтримки
+    і коректно масштабується на різних пристроях.
+  </p>
+</section>

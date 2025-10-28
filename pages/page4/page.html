@@ -1,0 +1,311 @@
+<section>
+  <h2>Тема, Мета, Місце розташування сайту, звіту</h2>
+
+  <p><strong>Тема:</strong> «Адаптивна верстка. Використання медіа-запитів CSS3.»</p>
+
+  <p><strong>Мета:</strong> Освоїти прийоми адаптації веб-інтерфейсу під різні пристрої (desktop, tablet, mobile), створити бургер-меню, адаптивну сітку контенту, коректно реалізувати поведінку елементів при зміні розміру екрана.</p>
+
+  <h4>Посилання на виконані завдання</h4>
+  <ul>
+    <li>Репозиторій власного веб-застосунку (GitHub):
+      <a href="https://github.com/pliffdax/IO-35_appWEB-StepanovOleksandr-FIOT-2025" target="_blank" rel="noopener">
+        посилання
+      </a>
+    </li>
+    <li>Власний веб-застосунок (Жива сторінка):
+      <a href="https://pliffdax.github.io/IO-35_appWEB-StepanovOleksandr-FIOT-2025/" target="_blank" rel="noopener">
+        посилання
+      </a>
+    </li>
+    <li>Репозиторій звітного HTML-документа (GitHub): 
+      <a href="https://github.com/pliffdax/IO-35_appRECORD-StepanovOleksandr-FIOT-2025" target="_blank" rel="noopener">
+        посилання
+      </a>
+    </li>
+    <li>Звітний HTML-документ (Жива сторінка): 
+      <a href="https://pliffdax.github.io/IO-35_appRECORD-StepanovOleksandr-FIOT-2025/" target="_blank" rel="noopener">
+        посилання
+      </a>
+    </li>
+    <li>Репозиторій самостійної роботи №1 (GitHub): 
+      <a href="https://github.com/pliffdax/IO-35_INDEPENDENT-StepanovOleksandr-FIOT-2025" target="_blank" rel="noopener">
+        посилання
+      </a>
+    </li>
+    <li>Самостійна робота №1 (Жива сторінка): 
+      <a href="https://pliffdax.github.io/IO-35_INDEPENDENT-StepanovOleksandr-FIOT-2025/" target="_blank" rel="noopener">
+        посилання
+      </a>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h2>Метатег viewport і базові брейкпоінти</h2>
+
+  <p>
+    Для коректного масштабування сторінки на мобільних пристроях використано метатег
+    <code>viewport</code>. Адаптацію виконано через медіа-запити з основним брейкпоінтом
+    <strong>900px</strong> (mobile-first підхід для ключових компонентів).
+  </p>
+
+  <h4>Фрагмент HTML</h4>
+  <pre><code>&lt;head&gt;
+  &lt;meta name="viewport" content="width=device-width, initial-scale=1"&gt;
+  ...
+&lt;/head&gt;</code></pre>
+
+  <h4>Базові медіа-запити</h4>
+  <pre><code>@media (max-width: 900px){ /* мобільна адаптація */ }
+@media (min-width: 901px){ /* поведінка для десктопів */ }</code></pre>
+
+  <figure>
+    <img class="img-lg" src="assets/devtools-breakpoints.png" alt="Перевірка медіа-запитів у DevTools">
+    <figcaption>Рис. 1 — Перевірка роботи медіа-запитів у інструментах розробника.</figcaption>
+  </figure>
+
+  <p>
+    Вибір 900px зумовлений тим, що на цьому порозі зручно перемикати розкладку навігації,
+    hero-секції, карток категорій, каталогу та футера.
+  </p>
+</section>
+
+<section>
+  <h2>Адаптивне бургер-меню (поведінка та доступність)</h2>
+
+  <p>
+    На мобільних екранах навігація ховається під шапкою та розкривається кнопкою «бургер».
+    Стан меню контролюється атрибутами <code>aria-expanded</code> (кнопка) та
+    <code>data-state</code> (контейнер навігації), що покращує доступність.
+  </p>
+
+  <h4>CSS (мобільний фрагмент)</h4>
+  <pre><code>@media (max-width: 900px){
+  .site-header{ position: sticky; top:0; z-index:100; }
+  .site-header .container{
+    position:relative; display:flex; align-items:center; justify-content:space-between;
+    padding:8px 16px; min-height:64px;
+  }
+  .burger{ display:inline-flex; position:relative; inline-size:40px; block-size:40px; }
+  .main-nav{
+    position:absolute; left:0; right:0; top:100%;
+    background:#0b1020; border-top:1px solid #1f2a44;
+    transform:translateY(-120%); opacity:0; pointer-events:none;
+    transition:transform .3s ease, opacity .2s ease; z-index:105;
+  }
+  .main-nav[data-state="open"]{ transform:translateY(0); opacity:1; pointer-events:auto; }
+}</code></pre>
+
+  <h4>JS (перемикач)</h4>
+  <pre><code>(function(){
+  const btn=document.querySelector('.burger'); const nav=document.querySelector('.main-nav');
+  if(!btn||!nav) return;
+  const toggle=()=>{ const open=btn.getAttribute('aria-expanded')==='true';
+    btn.setAttribute('aria-expanded', String(!open));
+    nav.dataset.state=open?'closed':'open';
+    document.body.style.overflow=(!open && matchMedia('(max-width:900px)').matches)?'hidden':'';
+  };
+  btn.addEventListener('click', toggle);
+  nav.addEventListener('click', e=>{ if(e.target.closest('a')){ btn.setAttribute('aria-expanded','false'); nav.dataset.state='closed'; document.body.style.overflow=''; }});
+  addEventListener('resize', ()=>{ if(matchMedia('(min-width:901px)').matches){ document.body.style.overflow=''; nav.dataset.state='closed'; btn.setAttribute('aria-expanded','false'); }});
+})();</code></pre>
+
+  <figure>
+    <img class="img-lg" src="assets/burger-open.png" alt="Відкрите бургер-меню">
+    <figcaption>Рис. 2 — Відкрите бургер-меню з чотирма пунктами навігації.</figcaption>
+  </figure>
+
+  <p>
+    При відкритому меню фон блокується від прокрутки, при переході на десктоп скрол повертається.
+  </p>
+</section>
+
+<section>
+  <h2>Hero: мобільне перевпорядкування та підстановка зображень</h2>
+
+  <p>
+    На мобільних зображення hero відображається зверху, текст — нижче. Для підстановки відповідного
+    зображення (desktop або mobile) замість елемента <code>&lt;picture&gt;</code> використано
+    JavaScript-скрипт, який змінює джерело зображення в залежності від ширини екрана.
+  </p>
+
+  <h4>HTML (базова структура)</h4>
+  <pre><code>&lt;section id="hero"&gt;
+  &lt;div class="hero-text"&gt;...&lt;/div&gt;
+  &lt;div class="hero-image"&gt;
+    &lt;img src="assets/images/bouquet-desktop.png" alt="Букет із троянд"&gt;
+  &lt;/div&gt;
+&lt;/section&gt;
+</code></pre>
+
+  <h4>JS (динамічна підстановка зображення)</h4>
+  <pre><code>document.addEventListener('DOMContentLoaded', () => {
+  const img = document.querySelector('#hero .hero-image img');
+
+  function updateHeroImage() {
+    if (window.innerWidth <= 900) {
+      img.src = 'assets/images/bouquet-mobile.png';
+    } else {
+      img.src = 'assets/images/bouquet-desktop.png';
+    }
+  }
+
+  updateHeroImage();
+  window.addEventListener('resize', updateHeroImage);
+});
+</code></pre>
+
+  <h4>CSS (мобільна компоновка)</h4>
+  <pre><code>@media (max-width:900px){
+  #hero {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 20px;
+    padding: 20px 16px 40px;
+    text-align: center;
+  }
+
+  #hero .hero-image {
+    order: -1;
+    display: flex;
+    justify-content: center;
+    align-items: flex-start;
+    max-width: 420px;
+    width: 100%;
+  }
+
+  #hero .hero-image img {
+    display: block;
+    width: 100%;
+    height: auto;
+  }
+}</code></pre>
+
+  <figure>
+    <img class="img-lg" src="assets/hero-mobile-new.png" alt="Hero після адаптації">
+    <figcaption>Рис. 3 — Hero-секція після адаптації: при ширині ≤900px автоматично підставляється мобільне зображення.</figcaption>
+  </figure>
+
+  <p>
+    Такий підхід через JavaScript дозволяє динамічно оновлювати зображення під час зміни ширини вікна,
+    забезпечуючи коректні пропорції без складних CSS-трансформацій і збереження оптимальної якості
+    зображення для кожного пристрою.
+  </p>
+</section>
+
+<section>
+  <h2>Категорії: кнопка всередині зображення на мобільних</h2>
+
+  <p>
+    У мобільній версії кнопка дії залишається всередині картки та прижата до нижнього краю зображення.
+  </p>
+
+  <h4>CSS (мобільний фрагмент)</h4>
+  <pre><code>@media (max-width:900px){
+  .category{ display:block; width:90%; margin:0 auto 24px; position:relative; overflow:hidden; border-radius:8px; }
+  .category img{ display:block; width:100%; height:auto; }
+  .category .btn{
+    position:absolute; left:50%; bottom:16px; transform:translateX(-50%);
+    width:140px; padding:10px 0; font-size:.95rem; border-radius:6px; background:var(--header-bg); color:#fff;
+  }
+}</code></pre>
+
+  <figure>
+    <img class="img-lg" src="assets/categories-btn-mobile.png" alt="Кнопка всередині картки">
+    <figcaption>Рис. 4 — Кнопка «Свій букет» розміщена всередині зображення на мобільній версії.</figcaption>
+  </figure>
+
+  <p>
+    Так користувач одразу бачить дію, не скролюючи нижче зображення.
+  </p>
+</section>
+
+<section>
+  <h2>Каталог: обмеження максимум 3 колонки + автоадаптація</h2>
+
+  <p>
+    На великих екранах кількість колонок обмежено трьома. Далі сітка автоматично переходить
+    у дві та одну колонку на вужчих екранах.
+  </p>
+
+  <h4>CSS</h4>
+  <pre><code>.catalog-grid{
+  display:grid; grid-template-columns:repeat(3,1fr);
+  gap:28px; width:90%; max-width:1200px; margin:0 auto;
+}
+@media (max-width:1200px){
+  .catalog-grid{ grid-template-columns:repeat(auto-fit, minmax(260px,1fr)); }
+}
+@media (max-width:900px){
+  .catalog-grid{ grid-template-columns:repeat(auto-fit, minmax(220px,1fr)); gap:20px; }
+}
+.catalog-meta .price{ white-space:nowrap; } /* 450&nbsp;грн — завжди в один рядок */</code></pre>
+
+  <p>
+    Використання <code>minmax()</code> та <code>auto-fit</code> прибирає «дірки» в сітці та зберігає читабельність.
+  </p>
+</section>
+
+<section>
+  <h2>Футер: три колонки в ряд, текст ліворуч; логотип знизу по центру</h2>
+
+  <p>
+    На мобільних три інформаційні колонки лишаються в одному ряду (з перенесенням при браку місця),
+    текст усередині вирівняний по лівому краю; логотип і копірайт знаходяться нижче по центру.
+  </p>
+
+  <h4>CSS (мобільний фрагмент)</h4>
+  <pre><code>@media (max-width:900px){
+  #contacts{ padding:24px 12px 20px; }
+  .footer-container{ display:flex; flex-direction:column; gap:24px; }
+  .footer-right{
+    order:1; display:flex; justify-content:space-around; align-items:flex-start;
+    flex-wrap:wrap; gap:16px; width:100%;
+  }
+  .footer-column{ width:30%; text-align:left; } /* текст ліворуч */
+  .footer-left{
+    order:2; align-items:center; justify-content:center; width:100%; text-align:center;
+  }
+  .footer-left .logo img{ height:56px; margin:8px auto 0; display:block; }
+}</code></pre>
+
+  <figure>
+    <img class="img-lg" src="assets/catalog-mobile.png" alt="Каталог на мобільному">
+    <figcaption>Рис. 5 — Каталог у мобільній версії: одна картка в ряду.</figcaption>
+  </figure>
+
+  <p>
+    Така схема зберігає швидкість сприйняття (ліве вирівнювання тексту) й брендинг внизу.
+  </p>
+</section>
+
+<section>
+  <h2>Тестування в інструментах розробника</h2>
+
+  <p>
+    Перевірку виконано в режимі «Responsive Design» (Zen Browser / DevTools): змінювався розмір вікна,
+    емулювалися популярні пристрої (iPhone/Pixel), перевірено відкриття/закриття бургер-меню,
+    перестроювання hero/категорій/каталогу, поведінка футера та відсутність горизонтального скролу.
+  </p>
+
+  <h4>Чек-лист</h4>
+  <ul>
+    <li>Меню розкривається під шапкою; блокування фону працює.</li>
+    <li>Hero: зображення зверху, текст знизу; відступи коректні.</li>
+    <li>Категорії: кнопка всередині зображення, читабельність збережена.</li>
+    <li>Каталог: 3→2→1 колонки; ціна не переноситься (nowrap або &amp;nbsp;).</li>
+    <li>Футер: три колонки в ряд, текст ліворуч; логотип внизу по центру.</li>
+  </ul>
+</section>
+
+<section>
+  <h2>Висновки</h2>
+  <p>
+    У ході роботи я опанувала практичні прийоми адаптивної верстки: медіа-запити, мобільну навігацію
+    з підтримкою доступності, гнучкі сітки контенту та адаптивні зображення. Забезпечила коректну
+    роботу інтерфейсу на різних пристроях, оптимізувала розкладку без зайвих перевантажень CSS.
+    Отриманий результат повністю відповідає вимогам ЛР №4.
+  </p>
+</section>
+
