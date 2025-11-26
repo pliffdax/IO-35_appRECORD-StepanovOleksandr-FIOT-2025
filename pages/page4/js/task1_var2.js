@@ -1,3 +1,11 @@
+/**
+ * Завдання 1.2
+ * Напишіть функцію getProductDetails, яка приймає ідентифікатор товару productId
+ * та дві колбек-функції: successCallback і errorCallback.
+ *
+ * Функція повинна отримати деталі товару та передати їх у successCallback.
+ * Якщо товар не знайдено — викликається errorCallback з повідомленням про помилку.
+ */
 const products = [
   { id: 1, name: "Ноутбук", price: 25000 },
   { id: 2, name: "Смартфон", price: 12000 },

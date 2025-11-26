@@ -1,3 +1,11 @@
+/**
+ * Завдання 1.10
+ * Напишіть функцію checkBrackets(str), яка перевіряє правильність закриття дужок:
+ * (), {}, [] у рядку JavaScript-коду.
+ *
+ * Якщо код коректний — повертає true.
+ * В іншому випадку — false.
+ */
 function checkBrackets(str) {
   const stack = [];
   const pairs = {

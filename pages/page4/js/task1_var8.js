@@ -1,3 +1,14 @@
+/**
+ * Завдання 1.8
+ * Напиши функцію-конструктор Storage для управління складом товарів.
+ *
+ * Приймає один аргумент — початковий масив товарів та зберігає його у items.
+ *
+ * Методи:
+ *  - getItems() — повертає масив товарів.
+ *  - addItem(item) — додає товар до масиву.
+ *  - removeItem(item) — видаляє товар, якщо він існує.
+ */
 function Storage(initialItems) {
   this.items = Array.isArray(initialItems) ? [...initialItems] : [];
 }
