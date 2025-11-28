@@ -1,0 +1,178 @@
+<!DOCTYPE html>
+<html lang="uk">
+<head>
+    <meta charset="utf-8">
+    <title>Лабораторна робота №6 — Виконання завдань</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header class="header">
+    <h1>Лабораторна робота №6</h1>
+    <p>Прототипи. Класи. DOM. Події. Об'єкт події. Делегування подій.</p>
+</header>
+
+<main class="main">
+    <!-- Завдання 2 -->
+    <section id="task1-var2" class="task-card">
+        <h2>Завдання 2</h2>
+        <p>Натискання на кнопку <strong>SWAP ME</strong> здійснює обмін вмістом між двома інпутами.</p>
+        <div class="task-content">
+            <label>
+                Перше значення:
+                <input type="text" id="swap-input-1" value="Hello">
+            </label>
+            <label>
+                Друге значення:
+                <input type="text" id="swap-input-2" value="World">
+            </label>
+            <button id="swap-btn" class="btn">SWAP ME</button>
+        </div>
+    </section>
+
+    <!-- Завдання 4 -->
+    <section id="task1-var4" class="task-card">
+        <h2>Завдання 4</h2>
+        <p>Кнопки змінюють розмір квадрата на 15 пікселів.</p>
+        <div class="task-content">
+            <div id="resizable-box" class="box"></div>
+            <div class="btn-group">
+                <button id="btn-decrease" class="btn">Зменшити</button>
+                <button id="btn-increase" class="btn">Збільшити</button>
+            </div>
+        </div>
+    </section>
+
+    <!-- Завдання 6 -->
+    <section id="task1-var6" class="task-card">
+        <h2>Завдання 6</h2>
+        <p>Кнопка «Подвоїти» збільшує значення у кожному елементі списку вдвічі.</p>
+        <div class="task-content">
+            <ul id="numbers-list" class="number-list">
+                <li>2</li>
+                <li>4</li>
+                <li>8</li>
+                <li>16</li>
+            </ul>
+            <button id="btn-double" class="btn">Подвоїти</button>
+        </div>
+    </section>
+
+    <!-- Завдання 7 -->
+    <section id="task2-var7" class="task-card">
+        <h2>Завдання 7</h2>
+        <p>Скрипт рахує кількість категорій та кількість елементів у кожній категорії й виводить результат у консоль.</p>
+        <pre class="console-hint">Відкрийте консоль розробника, щоб побачити результат (Завдання 7).</pre>
+        <ul id="categories">
+            <li class="item">
+                <h2>Animals</h2>
+                <ul>
+                    <li>Cat</li>
+                    <li>Hamster</li>
+                    <li>Horse</li>
+                    <li>Parrot</li>
+                </ul>
+            </li>
+            <li class="item">
+                <h2>Products</h2>
+                <ul>
+                    <li>Bread</li>
+                    <li>Parsley</li>
+                    <li>Cheese</li>
+                </ul>
+            </li>
+            <li class="item">
+                <h2>Technologies</h2>
+                <ul>
+                    <li>HTML</li>
+                    <li>CSS</li>
+                    <li>JavaScript</li>
+                    <li>React</li>
+                    <li>Node.js</li>
+                </ul>
+            </li>
+        </ul>
+    </section>
+
+    <!-- Завдання 8 -->
+    <section id="task2-var8" class="task-card">
+        <h2>Завдання 8</h2>
+        <p>Скрипт обробляє форму логіна, перевіряє заповненість полів і виводить об'єкт з даними у консоль.</p>
+        <form class="login-form">
+            <label>
+                Email
+                <input type="email" name="email" />
+            </label>
+            <label>
+                Password
+                <input type="password" name="password" />
+            </label>
+            <button type="submit" class="btn">Log in</button>
+        </form>
+        <pre class="console-hint">Результат сабміту форми дивитися у консолі (Завдання 8).</pre>
+    </section>
+
+    <!-- Завдання 9 -->
+    <section id="task2-var9" class="task-card">
+        <h2>Завдання 9</h2>
+        <p>Кнопка змінює колір фону <code>body</code> та виводить значення у спані.</p>
+        <div class="widget">
+            <p>Background color: <span class="color">-</span></p>
+            <button type="button" class="change-color btn">Change color</button>
+        </div>
+    </section>
+
+    <!-- Завдання 10 -->
+    <section id="task2-var10" class="task-card">
+        <h2>Завдання 10</h2>
+        <p>Створення та очищення колекції кольорових блоків.</p>
+        <div id="controls" class="controls">
+            <input type="number" min="1" max="100" step="1" id="boxes-amount" />
+            <button type="button" data-create class="btn">Create</button>
+            <button type="button" data-destroy class="btn btn-secondary">Destroy</button>
+        </div>
+        <div id="boxes" class="boxes"></div>
+    </section>
+
+    <!-- Делегування подій (модальне вікно) -->
+    <section id="task2-delegate" class="task-card">
+        <h2>Делегування подій</h2>
+        <p>Клік по картці товару відкриває модальне вікно з описом.</p>
+        <ul id="product-list" class="product-list">
+            <li class="product-card" data-title="Ноутбук" data-description="Легкий ноутбук з 16 ГБ RAM та SSD 512 ГБ." data-price="32000 грн">
+                <h3>Ноутбук</h3>
+                <p>Натисніть, щоб переглянути деталі</p>
+            </li>
+            <li class="product-card" data-title="Смартфон" data-description="Смартфон з AMOLED-екраном та подвійною камерою." data-price="21000 грн">
+                <h3>Смартфон</h3>
+                <p>Натисніть, щоб переглянути деталі</p>
+            </li>
+            <li class="product-card" data-title="Навушники" data-description="Бездротові навушники з шумопоглинанням." data-price="4500 грн">
+                <h3>Навушники</h3>
+                <p>Натисніть, щоб переглянути деталі</p>
+            </li>
+        </ul>
+    </section>
+
+    <!-- Модальне вікно -->
+    <div id="modal-overlay" class="modal-overlay hidden"></div>
+    <div id="modal" class="modal hidden">
+        <div class="modal-content">
+            <button type="button" id="modal-close" class="modal-close">×</button>
+            <h3 id="modal-title"></h3>
+            <p id="modal-description"></p>
+            <p id="modal-price" class="modal-price"></p>
+        </div>
+    </div>
+</main>
+
+<!-- Скрипти -->
+<script src="js/task1_var2.js" defer></script>
+<script src="js/task1_var4.js" defer></script>
+<script src="js/task1_var6.js" defer></script>
+<script src="js/task2_var7.js" defer></script>
+<script src="js/task2_var8.js" defer></script>
+<script src="js/task2_var9.js" defer></script>
+<script src="js/task2_var10.js" defer></script>
+<script src="js/task2_delegate.js" defer></script>
+</body>
+</html>

@@ -1,0 +1,434 @@
+<section>
+  <h2>Тема, Мета, Місце розташування сайту, звіту</h2>
+
+  <p><strong>Тема:</strong> «Прототипи. Класи. Об’єктна модель документа (DOM). Події. Об’єкт події. Делегування подій.»</p>
+
+  <p><strong>Мета:</strong> Придбати практичні навички роботи з DOM, обробкою подій, делегуванням подій у JavaScript та реалізацією інтерактивних елементів веб-сторінки.</p>
+
+  <h4>Посилання на виконані завдання</h4>
+  <ul>
+    <li>Репозиторій власного веб-застосунку (GitHub):
+      <a href="https://github.com/pliffdax/IO-35_appWEB-StepanovOleksandr-FIOT-2025" target="_blank" rel="noopener">
+        посилання
+      </a>
+    </li>
+    <li>Власний веб-застосунок (Жива сторінка):
+      <a href="https://pliffdax.github.io/IO-35_appWEB-StepanovOleksandr-FIOT-2025/" target="_blank" rel="noopener">
+        посилання
+      </a>
+    </li>
+    <li>Репозиторій звітного HTML-документа (GitHub): 
+      <a href="https://github.com/pliffdax/IO-35_appRECORD-StepanovOleksandr-FIOT-2025" target="_blank" rel="noopener">
+        посилання
+      </a>
+    </li>
+    <li>Звітний HTML-документ (Жива сторінка): 
+      <a href="https://pliffdax.github.io/IO-35_appRECORD-StepanovOleksandr-FIOT-2025/" target="_blank" rel="noopener">
+        посилання
+      </a>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h2>Завдання №1. Реалізація варіантів 2, 4, 6</h2>
+
+  <p>
+    У першому завданні лабораторної роботи №6 були реалізовані три інтерактивні приклади,
+    які демонструють роботу з DOM, обробкою подій та зміною стану елементів сторінки.
+  </p>
+
+  <h3>Варіант 2. Кнопка <code>SWAP ME</code> — обмін вмістом інпутів</h3>
+
+  <p>
+    Створено розмітку з текстом, двома полями введення та кнопкою
+    <strong>SWAP ME</strong>. Натискання на кнопку здійснює обмін значеннями
+    між двома інпутами. Кнопку можна натискати багаторазово, а значення інпутів
+    можна змінювати вручну.
+  </p>
+
+  <figure>
+    <img class="img-lg" src="assets/lab6-task2-ui.jpg" alt="Інтерфейс завдання 2 з двома інпутами та кнопкою SWAP ME">
+    <figcaption>Рис. 1 — Інтерфейс завдання 2 з полями введення та кнопкою SWAP ME.</figcaption>
+  </figure>
+
+  <h4>Фрагмент JavaScript-коду (варіант 2)</h4>
+  <pre><code>document.addEventListener("DOMContentLoaded", () =&gt; {
+  const input1 = document.getElementById("swap-input-1");
+  const input2 = document.getElementById("swap-input-2");
+  const btnSwap = document.getElementById("swap-btn");
+
+  if (!input1 || !input2 || !btnSwap) return;
+
+  btnSwap.addEventListener("click", () =&gt; {
+    const temp = input1.value;
+    input1.value = input2.value;
+    input2.value = temp;
+    console.log("Завдання 2: після обміну:", {
+      first: input1.value,
+      second: input2.value,
+    });
+  });
+});</code></pre>
+
+  <figure>
+    <img class="img-lg" src="assets/lab6-task2-console.jpg" alt="Вивід результатів обміну інпутів у консолі">
+    <figcaption>Рис. 2 — Вивід результатів роботи функції SWAP ME у консолі браузера.</figcaption>
+  </figure>
+
+  <h3>Варіант 4. Зміна розміру квадрата кнопками</h3>
+
+  <p>
+    Для варіанта 4 було реалізовано блок-квадрат та дві кнопки:
+    <strong>«Зменшити»</strong> та <strong>«Збільшити»</strong>.
+    Кожне натискання на відповідну кнопку зменшує або збільшує розміри квадрата
+    на 15 пікселів, що демонструє зміну inline-стилів елемента через JavaScript.
+  </p>
+
+  <figure>
+    <img class="img-lg" src="assets/lab6-task4-ui.jpg" alt="Квадрат з кнопками для збільшення та зменшення">
+    <figcaption>Рис. 3 — Квадрат зі зміною розміру за допомогою кнопок.</figcaption>
+  </figure>
+
+  <h4>Фрагмент JavaScript-коду (варіант 4)</h4>
+  <pre><code>document.addEventListener("DOMContentLoaded", () =&gt; {
+  const box = document.getElementById("resizable-box");
+  const btnDecrease = document.getElementById("btn-decrease");
+  const btnIncrease = document.getElementById("btn-increase");
+
+  if (!box || !btnDecrease || !btnIncrease) return;
+
+  const STEP = 15;
+
+  function getSize() {
+    const width = box.offsetWidth;
+    const height = box.offsetHeight;
+    return { width, height };
+  }
+
+  btnDecrease.addEventListener("click", () =&gt; {
+    const { width, height } = getSize();
+    const newWidth = Math.max(15, width - STEP);
+    const newHeight = Math.max(15, height - STEP);
+    box.style.width = newWidth + "px";
+    box.style.height = newHeight + "px";
+  });
+
+  btnIncrease.addEventListener("click", () =&gt; {
+    const { width, height } = getSize();
+    box.style.width = width + STEP + "px";
+    box.style.height = height + STEP + "px";
+  });
+});</code></pre>
+
+  <h3>Варіант 6. Подвоєння значень елементів списку</h3>
+
+  <p>
+    У варіанті 6 реалізовано кнопу <strong>«Подвоїти»</strong>, яка збільшує
+    значення кожного елемента маркированого списку у два рази. При повторному
+    натисканні всі значення знову множаться на 2, що показує можливість
+    багаторазової зміни DOM-контенту.
+  </p>
+
+  <figure>
+    <img class="img-lg" src="assets/lab6-task6-ui.jpg" alt="Список чисел та кнопка Подвоїти">
+    <figcaption>Рис. 4 — Список чисел та кнопка «Подвоїти».</figcaption>
+  </figure>
+
+  <h4>Фрагмент JavaScript-коду (варіант 6)</h4>
+  <pre><code>document.addEventListener("DOMContentLoaded", () =&gt; {
+  const list = document.getElementById("numbers-list");
+  const btnDouble = document.getElementById("btn-double");
+
+  if (!list || !btnDouble) return;
+
+  btnDouble.addEventListener("click", () =&gt; {
+    const items = list.querySelectorAll("li");
+    items.forEach((li) =&gt; {
+      const value = Number(li.textContent.trim());
+      if (!Number.isNaN(value)) {
+        li.textContent = String(value * 2);
+      }
+    });
+  });
+});</code></pre>
+</section>
+
+<section>
+  <h2>Завдання №2. Реалізація варіантів 7, 8, 9, 10</h2>
+
+  <p>
+    У другому завданні були реалізовані приклади роботи з DOM-деревом, формами,
+    подіями та динамічним створенням елементів. Логіка кожного варіанта
+    винесена в окремі JavaScript-файли.
+  </p>
+
+  <h3>Варіант 7. Підрахунок категорій та елементів списку</h3>
+
+  <p>
+    Для списку категорій <code>ul#categories</code> реалізовано скрипт, який:
+  </p>
+  <ul>
+    <li>рахує та виводить в консоль кількість категорій (<code>li.item</code>);</li>
+    <li>для кожної категорії виводить її назву та кількість вкладених елементів.</li>
+  </ul>
+
+  <pre><code>document.addEventListener("DOMContentLoaded", () =&gt; {
+  const categoriesList = document.getElementById("categories");
+  if (!categoriesList) return;
+
+  const items = categoriesList.querySelectorAll(".item");
+  console.log("Завдання 7:");
+  console.log("Number of categories:", items.length);
+
+  items.forEach((item) =&gt; {
+    const titleElement = item.querySelector("h2");
+    const innerItems = item.querySelectorAll("ul li");
+    const title = titleElement ? titleElement.textContent.trim() : "(без назви)";
+    console.log("Category:", title);
+    console.log("Elements:", innerItems.length);
+  });
+});</code></pre>
+
+  <figure>
+    <img class="img-lg" src="assets/lab6-task7-console.jpg" alt="Вивід інформації про категорії у консолі">
+    <figcaption>Рис. 5 — Вивід інформації про кількість категорій та елементів у консолі (завдання 7).</figcaption>
+  </figure>
+
+  <h3>Варіант 8. Обробка форми логіна</h3>
+
+  <p>
+    У варіанті 8 реалізовано обробку форми логіна без перезавантаження сторінки.
+    Якщо хоча б одне поле порожнє, користувач бачить попередження
+    <code>All form fields must be filled in</code>. Якщо всі поля заповнено,
+    їх значення збираються в об’єкт, виводяться в консоль, а форма очищується.
+  </p>
+
+  <figure>
+    <img class="img-lg" src="assets/lab6-task8-ui.jpg" alt="Форма логіна: поля Email та Password">
+    <figcaption>Рис. 6 — Форма логіна з валідацією полів через JavaScript.</figcaption>
+  </figure>
+
+  <h4>Фрагмент JavaScript-коду (варіант 8)</h4>
+  <pre><code>document.addEventListener("DOMContentLoaded", () =&gt; {
+  const form = document.querySelector(".login-form");
+  if (!form) return;
+
+  form.addEventListener("submit", (event) =&gt; {
+    event.preventDefault();
+
+    const { elements } = form;
+    const emailInput = elements.namedItem("email");
+    const passwordInput = elements.namedItem("password");
+
+    const email = emailInput.value.trim();
+    const password = passwordInput.value.trim();
+
+    if (!email || !password) {
+      alert("All form fields must be filled in");
+      return;
+    }
+
+    const data = { email, password };
+    console.log("Завдання 8: об'єкт даних форми:", data);
+
+    form.reset();
+  });
+});</code></pre>
+
+  <h3>Варіант 9. Зміна кольору фону сторінки</h3>
+
+  <p>
+    Кнопка <strong>Change color</strong> змінює колір фону елемента
+    <code>&lt;body&gt;</code> на випадковий hex-колір та відображає значення
+    цього кольору в елементі <code>&lt;span class="color"&gt;</code>.
+  </p>
+
+  <figure>
+    <img class="img-lg" src="assets/lab6-task9-ui.jpg" alt="Віджет зміни кольору з кнопкою Change color">
+    <figcaption>Рис. 7 — Віджет зміни кольору фону сторінки.</figcaption>
+  </figure>
+
+  <h4>Фрагмент JavaScript-коду (варіант 9)</h4>
+  <pre><code>function getRandomHexColor() {
+  return `#${Math.floor(Math.random() * 16777215)
+    .toString(16)
+    .padStart(6, "0")}`;
+}
+
+document.addEventListener("DOMContentLoaded", () =&gt; {
+  const button = document.querySelector(".change-color");
+  const spanColor = document.querySelector(".color");
+
+  if (!button || !spanColor) return;
+
+  button.addEventListener("click", () =&gt; {
+    const newColor = getRandomHexColor();
+    document.body.style.backgroundColor = newColor;
+    spanColor.textContent = newColor;
+    console.log("Завдання 9: новий колір фону:", newColor);
+  });
+});</code></pre>
+
+  <h3>Варіант 10. Створення та очищення колекції блоків</h3>
+
+  <p>
+    У варіанті 10 реалізовано динамічне створення колекції кольорових блоків.
+    Користувач вводить кількість елементів у поле <code>input</code> і натискає
+    кнопку <strong>Create</strong>. Після цього генеруються <code>div</code>-блоки:
+    перший розміром 30×30px, кожний наступний більший на 10px. Колір кожного блока
+    випадковий. Кнопка <strong>Destroy</strong> очищає контейнер.
+  </p>
+
+  <figure>
+    <img class="img-lg" src="assets/lab6-task10-ui.jpg" alt="Колекція кольорових div-блоків та панель керування">
+    <figcaption>Рис. 8 — Приклад згенерованої колекції кольорових блоків (завдання 10).</figcaption>
+  </figure>
+
+  <h4>Фрагмент JavaScript-коду (варіант 10)</h4>
+  <pre><code>function getRandomHexColor() {
+  return `#${Math.floor(Math.random() * 16777215)
+    .toString(16)
+    .padStart(6, "0")}`;
+}
+
+document.addEventListener("DOMContentLoaded", () =&gt; {
+  const input = document.getElementById("boxes-amount");
+  const btnCreate = document.querySelector("[data-create]");
+  const btnDestroy = document.querySelector("[data-destroy]");
+  const boxesContainer = document.getElementById("boxes");
+
+  if (!input || !btnCreate || !btnDestroy || !boxesContainer) return;
+
+  function createBoxes(amount) {
+    const baseSize = 30;
+    const fragments = document.createDocumentFragment();
+
+    for (let i = 0; i &lt; amount; i += 1) {
+      const size = baseSize + i * 10;
+      const box = document.createElement("div");
+      box.style.width = `${size}px`;
+      box.style.height = `${size}px`;
+      box.style.backgroundColor = getRandomHexColor();
+      box.style.borderRadius = "4px";
+      box.style.border = "1px solid rgba(0, 0, 0, 0.1)";
+      fragments.appendChild(box);
+    }
+
+    boxesContainer.innerHTML = "";
+    boxesContainer.appendChild(fragments);
+  }
+
+  function destroyBoxes() {
+    boxesContainer.innerHTML = "";
+  }
+
+  btnCreate.addEventListener("click", () =&gt; {
+    const value = Number(input.value);
+    if (Number.isNaN(value) || value &lt; 1 || value &gt; 100) {
+      alert("Будь ласка, введіть число від 1 до 100.");
+      return;
+    }
+    createBoxes(value);
+    input.value = "";
+  });
+
+  btnDestroy.addEventListener("click", () =&gt; {
+    destroyBoxes();
+  });
+});</code></pre>
+</section>
+
+<section>
+  <h2>Додаткове завдання. Делегування подій та модальне вікно</h2>
+
+  <p>
+    Додатково у власному веб-застосунку реалізовано делегування подій:
+    список карток товарів, де клік по будь-якій картці відкриває модальне вікно
+    з детальною інформацією про товар (назва, опис, ціна). Обробник подій
+    навішується на батьківський елемент <code>&lt;ul&gt;</code>, а потрібна картка
+    визначається через <code>event.target.closest(".product-card")</code>.
+  </p>
+
+  <figure>
+    <img class="img-lg" src="assets/lab6-delegate-ui.jpg" alt="Список товарів та модальне вікно з описом">
+    <figcaption>Рис. 9 — Делегування подій: клік по товару відкриває модальне вікно з описом.</figcaption>
+  </figure>
+
+  <h4>Фрагмент JavaScript-коду (делегування подій)</h4>
+  <pre><code>
+document.addEventListener("DOMContentLoaded", () =&gt; {
+  const list = document.getElementById("product-list");
+  const modal = document.getElementById("modal");
+  const overlay = document.getElementById("modal-overlay");
+  const modalTitle = document.getElementById("modal-title");
+  const modalDescription = document.getElementById("modal-description");
+  const modalPrice = document.getElementById("modal-price");
+  const modalClose = document.getElementById("modal-close");
+
+  if (!list || !modal || !overlay || !modalTitle || !modalDescription || !modalPrice || !modalClose) {
+    return;
+  }
+
+  function openModal(title, description, price) {
+    modalTitle.textContent = title || "";
+    modalDescription.textContent = description || "";
+    modalPrice.textContent = price || "";
+    modal.classList.remove("hidden");
+    overlay.classList.remove("hidden");
+  }
+
+  function closeModal() {
+    modal.classList.add("hidden");
+    overlay.classList.add("hidden");
+  }
+
+  list.addEventListener("click", (event) =&gt; {
+    const card = event.target.closest(".product-card");
+    if (!card || !list.contains(card)) {
+      return;
+    }
+
+    const title = card.dataset.title || card.querySelector("h3")?.textContent || "";
+    const description = card.dataset.description || "";
+    const price = card.dataset.price || "";
+
+    openModal(title, description, price);
+  });
+
+  modalClose.addEventListener("click", () =&gt; {
+    closeModal();
+  });
+
+  overlay.addEventListener("click", () =&gt; {
+    closeModal();
+  });
+
+  document.addEventListener("keydown", (event) =&gt; {
+    if (event.key === "Escape") {
+      closeModal();
+    }
+  });
+});</code></pre>
+</section>
+
+<section>
+  <h2>Висновки</h2>
+
+  <p>
+    У ході виконання лабораторної роботи №6 було закріплено практичні навички роботи
+    з DOM, подіями та делегуванням подій у JavaScript. Було реалізовано декілька
+    інтерактивних прикладів: обмін значень між інпутами, зміна розміру елементів,
+    модифікація вмісту списків, обробка форм без перезавантаження сторінки, зміна
+    стилів елементів та динамічне створення колекцій блоків. Окремо було розглянуто
+    делегування подій, що дозволяє ефективно працювати з великою кількістю однотипних
+    елементів.
+  </p>
+
+  <p>
+    Отримані результати демонструють розуміння базових підходів до побудови
+    інтерактивних веб-інтерфейсів, організації коду в окремі модулі та практичного
+    застосування подій, об’єктної моделі документа та засобів JavaScript для
+    створення сучасних вебзастосунків.
+  </p>
+</section>
