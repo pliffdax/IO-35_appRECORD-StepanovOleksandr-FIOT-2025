@@ -1,0 +1,453 @@
+<section>
+  <h2>Тема, Мета, Місце розташування сайту, звіту</h2>
+
+  <p><strong>Тема:</strong> «WEB-сховище. Web Storage API. Асинхронність. Проміси. Пагінація.»</p>
+
+  <p>
+    <strong>Мета:</strong> Придбати практичні навички роботи з локальним веб-сховищем
+    (<code>localStorage</code>), реалізації асинхронних операцій за допомогою промісів,
+    роботи з зовнішнім HTTP API, пагінації та використання сторонніх бібліотек
+    для таймера та модальних вікон.
+  </p>
+
+  <h4>Посилання на виконані завдання</h4>
+  <ul>
+    <li>Репозиторій власного веб-застосунку (GitHub):
+      <a href="https://github.com/pliffdax/IO-35_appWEB-StepanovOleksandr-FIOT-2025" target="_blank" rel="noopener">
+        посилання
+      </a>
+    </li>
+    <li>Власний веб-застосунок (Жива сторінка):
+      <a href="https://pliffdax.github.io/IO-35_appWEB-StepanovOleksandr-FIOT-2025/" target="_blank" rel="noopener">
+        посилання
+      </a>
+    </li>
+    <li>Репозиторій звітного HTML-документа (GitHub): 
+      <a href="https://github.com/pliffdax/IO-35_appRECORD-StepanovOleksandr-FIOT-2025" target="_blank" rel="noopener">
+        посилання
+      </a>
+    </li>
+    <li>Звітний HTML-документ (Жива сторінка): 
+      <a href="https://pliffdax.github.io/IO-35_appRECORD-StepanovOleksandr-FIOT-2025/" target="_blank" rel="noopener">
+        посилання
+      </a>
+    </li>
+  </ul>
+</section>
+
+<section>
+  <h2>Завдання №1. Кошик та пагінація</h2>
+
+  <p>
+    У першому завданні лабораторної роботи №7 було реалізовано сторінку
+    <code>cart.html</code> з інтерактивним кошиком товарів та пагінацією.
+    Список товарів розбивається на сторінки фіксованого розміру, а користувач
+    може додавати позиції до кошика, змінювати їх кількість та очищувати кошик.
+  </p>
+
+  <p>
+    Для відображення каталогу використано грід-розмітку, а для керування станом
+    кошика – окремий об’єкт у JavaScript, де ключем виступає ідентифікатор товару,
+    а значенням – структура з посиланням на товар та його кількістю.
+  </p>
+
+  <figure>
+    <img
+      class="img-lg"
+      src="assets/lab7-task1-cart-ui.jpg"
+      alt="Інтерфейс кошика з переліком товарів та панеллю пагінації"
+    >
+    <figcaption>Рис. 1 — Інтерфейс сторінки з кошиком та пагінацією.</figcaption>
+  </figure>
+
+  <h4>Фрагмент JavaScript-коду для пагінації та кошика</h4>
+  <pre><code>const PAGE_SIZE = 6;
+let currentPage = 1;
+
+const cart = {}; // ключ – id товару, значення – { product, quantity }
+
+function renderProducts() {
+  const startIndex = (currentPage - 1) * PAGE_SIZE;
+  const endIndex = startIndex + PAGE_SIZE;
+  const pageItems = products.slice(startIndex, endIndex);
+
+  productsListEl.innerHTML = pageItems
+    .map((product) =&gt; `
+      &lt;article class="product-card"&gt;
+        &lt;h3 class="product-card__title"&gt;${product.name}&lt;/h3&gt;
+        &lt;p class="product-card__price"&gt;${product.price} ₴&lt;/p&gt;
+        &lt;div class="product-card__actions"&gt;
+          &lt;span class="product-card__badge"&gt;ID: ${product.id}&lt;/span&gt;
+          &lt;button class="btn btn--primary" data-add-id="${product.id}"&gt;
+            Додати в кошик
+          &lt;/button&gt;
+        &lt;/div&gt;
+      &lt;/article&gt;
+    `)
+    .join("");
+}</code></pre>
+
+  <figure>
+    <img
+      class="img-lg"
+      src="assets/lab7-task1-cart-details.jpg"
+      alt="Панель кошика з переліком доданих товарів, їх кількістю та загальною сумою"
+    >
+    <figcaption>Рис. 2 — Відображення вмісту кошика та підрахунок загальної суми.</figcaption>
+  </figure>
+</section>
+
+<section>
+  <h2>Завдання №2. Галерея зображень та форма зворотного звʼязку</h2>
+
+  <p>
+    Друге завдання складається з двох частин: реалізації галереї зображень
+    з модальним вікном та створення форми зворотного звʼязку, стан якої
+    зберігається у <code>localStorage</code>.
+  </p>
+
+  <h3>Частина 1. Галерея зображень з використанням basicLightbox</h3>
+
+  <p>
+    На сторінці <code>index.html</code> створено список з класом
+    <code>gallery</code>, який наповнюється елементами динамічно на основі
+    масиву об’єктів <code>images</code>. Кожен елемент містить превʼю-зображення
+    та посилання на оригінал. При кліку на зображенні відкривається модальне
+    вікно, реалізоване за допомогою бібліотеки <strong>basicLightbox</strong>.
+  </p>
+
+  <figure>
+    <img
+      class="img-lg"
+      src="assets/lab7-task2-gallery-ui.jpg"
+      alt="Галерея зображень із сіткою карток на головній сторінці"
+    >
+    <figcaption>Рис. 3 — Галерея зображень із відкриттям великого фото в модальному вікні.</figcaption>
+  </figure>
+
+  <h4>Фрагмент коду генерації галереї</h4>
+  <pre><code>const galleryEl = document.querySelector(".gallery");
+
+function createGalleryMarkup(items) {
+  return items
+    .map(({ preview, original, description }) =&gt; `
+      &lt;li class="gallery__item"&gt;
+        &lt;a class="gallery__link" href="${original}"&gt;
+          &lt;img
+            class="gallery__image"
+            src="${preview}"
+            data-source="${original}"
+            alt="${description}"
+          /&gt;
+        &lt;/a&gt;
+      &lt;/li&gt;
+    `)
+    .join("");
+}
+
+galleryEl.innerHTML = createGalleryMarkup(images);
+
+galleryEl.addEventListener("click", (event) =&gt; {
+  event.preventDefault();
+  const img = event.target;
+  if (img.nodeName !== "IMG") return;
+
+  const instance = basicLightbox.create(
+    `&lt;img src="${img.dataset.source}" alt="${img.alt}" /&gt;`
+  );
+  instance.show();
+});</code></pre>
+
+  <h3>Частина 2. Форма зворотного звʼязку та Web Storage API</h3>
+
+  <p>
+    На сторінці <code>2-form.html</code> реалізовано форму з полями
+    <code>email</code> та <code>message</code>. За допомогою події
+    <code>input</code> відстежуються всі зміни у полях форми, оновлюється
+    об’єкт <code>formData</code> та збережений стан форми у
+    <code>localStorage</code> під ключем
+    <code>"feedback-form-state"</code>. При завантаженні сторінки вміст
+    сховища зчитується, а форма автоматично заповнюється останніми даними.
+  </p>
+
+  <figure>
+    <img
+      class="img-lg"
+      src="assets/lab7-task2-form-ui.jpg"
+      alt="Форма зворотного звʼязку з полями email та повідомлення"
+    >
+    <figcaption>Рис. 4 — Форма зворотного звʼязку з відновленням стану з <code>localStorage</code>.</figcaption>
+  </figure>
+
+  <h4>Фрагмент коду роботи з localStorage</h4>
+  <pre><code>const STORAGE_KEY = "feedback-form-state";
+const form = document.querySelector(".feedback-form");
+
+const formData = {
+  email: "",
+  message: ""
+};
+
+form.addEventListener("input", (event) =&gt; {
+  const { name, value } = event.target;
+  if (!(name in formData)) return;
+
+  formData[name] = value.trim();
+  localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
+});
+
+window.addEventListener("DOMContentLoaded", () =&gt; {
+  const saved = localStorage.getItem(STORAGE_KEY);
+  if (!saved) return;
+
+  const parsed = JSON.parse(saved);
+  formData.email = parsed.email || "";
+  formData.message = parsed.message || "";
+
+  form.elements.email.value = formData.email;
+  form.elements.message.value = formData.message;
+});</code></pre>
+</section>
+
+<section>
+  <h2>Завдання №3. Таймер зворотного відліку</h2>
+
+  <p>
+    У третьому завданні реалізовано таймер зворотного відліку на сторінці
+    <code>1-timer.html</code>. Користувач обирає дату та час у майбутньому
+    за допомогою віджета <strong>flatpickr</strong>, після чого може запустити
+    відлік. Якщо вибрано дату в минулому, користувач отримує повідомлення
+    з помилкою через бібліотеку <strong>iziToast</strong>.
+  </p>
+
+  <p>
+    Після натискання кнопки <strong>Start</strong> інтерфейс переходить у режим
+    зворотного відліку: інпут стає недоступним, а кожну секунду оновлюються
+    значення днів, годин, хвилин та секунд до досягнення нуля.
+  </p>
+
+  <figure>
+    <img
+      class="img-lg"
+      src="assets/lab7-task3-timer-ui.jpg"
+      alt="Таймер зворотного відліку з полем вибору дати та блоками часу"
+    >
+    <figcaption>Рис. 5 — Таймер зворотного відліку з використанням flatpickr та iziToast.</figcaption>
+  </figure>
+
+  <h4>Фрагмент JavaScript-коду таймера</h4>
+  <pre><code>flatpickr("#datetime-picker", {
+  enableTime: true,
+  time_24hr: true,
+  defaultDate: new Date(),
+  minuteIncrement: 1,
+  onClose(selectedDates) {
+    const date = selectedDates[0];
+    if (!date || date &lt;= new Date()) {
+      iziToast.error({
+        title: "Помилка",
+        message: "Please choose a date in the future",
+        position: "topRight"
+      });
+      startBtn.disabled = true;
+      return;
+    }
+    selectedDate = date;
+    startBtn.disabled = false;
+  }
+});
+
+function convertMs(ms) {
+  const second = 1000;
+  const minute = second * 60;
+  const hour = minute * 60;
+  const day = hour * 24;
+
+  const days = Math.floor(ms / day);
+  const hours = Math.floor((ms % day) / hour);
+  const minutes = Math.floor(((ms % day) % hour) / minute);
+  const seconds = Math.floor((((ms % day) % hour) % minute) / second);
+
+  return { days, hours, minutes, seconds };
+}</code></pre>
+</section>
+
+<section>
+  <h2>Завдання №4. Генератор промісів</h2>
+
+  <p>
+    Четверте завдання передбачає створення форми на сторінці
+    <code>2-snackbar.html</code>, яка генерує проміс із заданою затримкою.
+    Користувач вводить значення затримки у мілісекундах та обирає бажаний
+    результат промісу (fulfilled або rejected). Після сабміту форми створюється
+    проміс, який через <code>setTimeout</code> виконується або відхиляється.
+  </p>
+
+  <p>
+    Результат роботи промісу виводиться через сповіщення
+    <strong>iziToast</strong> у вигляді повідомлень:
+    <code>Fulfilled promise in N ms</code> або
+    <code>Rejected promise in N ms</code>, де N — введена затримка.
+  </p>
+
+  <figure>
+    <img
+      class="img-lg"
+      src="assets/lab7-task4-promises-ui.jpg"
+      alt="Форма для створення промісу з полем затримки та перемикачами стану"
+    >
+    <figcaption>Рис. 6 — Генератор промісів із відображенням результату через iziToast.</figcaption>
+  </figure>
+
+  <h4>Фрагмент JavaScript-коду генератора промісів</h4>
+  <pre><code>function createDelayedPromise(delay, state) {
+  return new Promise((resolve, reject) =&gt; {
+    setTimeout(() =&gt; {
+      if (state === "fulfilled") {
+        resolve(delay);
+      } else {
+        reject(delay);
+      }
+    }, delay);
+  });
+}
+
+form.addEventListener("submit", (event) =&gt; {
+  event.preventDefault();
+
+  const delay = Number(form.elements.delay.value);
+  const state = form.elements.state.value;
+
+  createDelayedPromise(delay, state)
+    .then((ms) =&gt; {
+      iziToast.success({
+        title: "✅ Success",
+        message: `Fulfilled promise in ${ms}ms`,
+        position: "topRight"
+      });
+    })
+    .catch((ms) =&gt; {
+      iziToast.error({
+        title: "❌ Error",
+        message: `Rejected promise in ${ms}ms`,
+        position: "topRight"
+      });
+    });
+});</code></pre>
+</section>
+
+<section>
+  <h2>Завдання №5. Пошук зображень через Pixabay API</h2>
+
+  <p>
+    У пʼятому завданні реалізовано повноцінну сторінку пошуку зображень
+    <code>3-search.html</code>, яка звертається до стороннього сервісу
+    <strong>Pixabay API</strong>. Користувач вводить ключове слово, після чого
+    відправляється HTTP-запит із параметрами пошуку (тип зображення, орієнтація,
+    безпечний пошук, кількість результатів на сторінку).
+  </p>
+
+  <p>
+    Результати відображаються у вигляді карток із превʼю-зображеннями та
+    додатковою статистикою (лайки, перегляди, коментарі, завантаження).
+    Кожна картка містить посилання на велике зображення, для перегляду якого
+    використано бібліотеку <strong>SimpleLightbox</strong>. Під час виконання
+    запиту відображається індикатор завантаження, а у випадку відсутності
+    результатів або помилки показуються відповідні сповіщення через
+    <strong>iziToast</strong>.
+  </p>
+
+  <figure>
+    <img
+      class="img-lg"
+      src="assets/lab7-task5-search-ui.jpg"
+      alt="Сторінка пошуку зображень з полем введення, результатами та статистикою"
+    >
+    <figcaption>Рис. 7 — Пошук зображень за ключовим словом через Pixabay API.</figcaption>
+  </figure>
+
+  <h4>Фрагмент коду роботи з Pixabay API</h4>
+  <pre><code>const API_KEY = "YOUR_PIXABAY_API_KEY";
+const BASE_URL = "https://pixabay.com/api/";
+
+function fetchImages(query) {
+  const params = new URLSearchParams({
+    key: API_KEY,
+    q: query,
+    image_type: "photo",
+    orientation: "horizontal",
+    safesearch: "true",
+    per_page: 40
+  });
+
+  return fetch(`${BASE_URL}?${params.toString()}`).then((response) =&gt; {
+    if (!response.ok) {
+      throw new Error(`HTTP error: ${response.status}`);
+    }
+    return response.json();
+  });
+}
+
+form.addEventListener("submit", (event) =&gt; {
+  event.preventDefault();
+  const query = queryInput.value.trim();
+  if (!query) {
+    iziToast.warning({
+      title: "Увага",
+      message: "Введіть, будь ласка, ключове слово для пошуку",
+      position: "topRight"
+    });
+    return;
+  }
+
+  showLoader();
+  clearGallery();
+
+  fetchImages(query)
+    .then((data) =&gt; {
+      if (!data.hits.length) {
+        iziToast.info({
+          title: "Результати",
+          message:
+            "Sorry, there are no images matching your search query. Please try again!",
+          position: "topRight"
+        });
+        return;
+      }
+
+      gallery.innerHTML = createGalleryMarkup(data.hits);
+      lightbox ? lightbox.refresh() : (lightbox = new SimpleLightbox(".search-gallery a"));
+    })
+    .catch((error) =&gt; {
+      iziToast.error({
+        title: "Помилка",
+        message: "Сталася помилка під час завантаження зображень",
+        position: "topRight"
+      });
+      console.error(error);
+    })
+    .finally(() =&gt; hideLoader());
+});</code></pre>
+</section>
+
+<section>
+  <h2>Висновки</h2>
+
+  <p>
+    У ході виконання лабораторної роботи №7 було закріплено практичні навички
+    роботи з Web Storage API, асинхронними запитами та промісами, а також
+    інтеграції сторонніх бібліотек у веб-застосунок. Було реалізовано кошик
+    із пагінацією, галерею зображень з модальним переглядом, форму збереження
+    стану у <code>localStorage</code>, таймер зворотного відліку та генератор
+    промісів із керованим результатом.
+  </p>
+
+  <p>
+    Окрему увагу було приділено роботі з зовнішнім HTTP API (Pixabay), обробці
+    можливих помилок та відображенню проміжних станів інтерфейсу (завантаження,
+    відсутність результатів, успішні/помилкові операції). Отримані результати
+    демонструють розуміння принципів збереження даних у браузері, побудови
+    асинхронних сценаріїв та використання бібліотек для створення сучасних,
+    інтерактивних веб-застосунків.
+  </p>
+</section>

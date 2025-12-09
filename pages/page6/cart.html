@@ -1,0 +1,49 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ЛР7 – Кошик і пагінація</title>
+    <link rel="stylesheet" href="css/style.css" />
+  </head>
+  <body>
+    <header class="header">
+      <h1>ЛР7 – Пошук зображень (Pixabay)</h1>
+      <nav class="nav">
+        <a href="index.html" class="nav__link">Галерея</a>
+        <a href="cart.html" class="nav__link nav__link--active">Кошик</a>
+        <a href="2-form.html" class="nav__link">Форма</a>
+        <a href="1-timer.html" class="nav__link">Таймер</a>
+        <a href="2-snackbar.html" class="nav__link">Проміси</a>
+        <a href="3-search.html" class="nav__link">Пошук зображень</a>
+      </nav>
+    </header>
+
+    <main class="layout">
+      <section class="products">
+        <h2 class="section-title">Список товарів</h2>
+
+        <div id="products-list" class="products__grid">
+          <!-- Товари малюємо через JS -->
+        </div>
+
+        <div id="pagination" class="pagination">
+          <!-- Кнопки пагінації малюємо через JS -->
+        </div>
+      </section>
+
+      <aside class="cart">
+        <h2 class="section-title">Кошик</h2>
+        <ul id="cart-items" class="cart__list">
+          <!-- Позиції кошика малюємо через JS -->
+        </ul>
+        <div class="cart__summary">
+          <p>Кількість товарів: <span id="cart-count">0</span></p>
+          <p>Загальна сума: <span id="cart-total">0</span> ₴</p>
+        </div>
+        <button id="cart-clear" class="btn btn--secondary">Очистити кошик</button>
+      </aside>
+    </main>
+
+    <script src="js/cart.js"></script>
+  </body>
+</html>

@@ -1,0 +1,78 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ЛР7 – Таймер зворотного відліку</title>
+
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- flatpickr CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/flatpickr/dist/flatpickr.min.css"
+    />
+
+    <!-- iziToast CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css"
+    />
+  </head>
+  <body>
+    <header class="header">
+      <h1>ЛР7 – Таймер зворотного відліку</h1>
+      <nav class="nav">
+        <a href="index.html" class="nav__link">Галерея</a>
+        <a href="cart.html" class="nav__link">Кошик</a>
+        <a href="2-form.html" class="nav__link">Форма</a>
+        <a href="1-timer.html" class="nav__link nav__link--active">Таймер</a>
+        <a href="2-snackbar.html" class="nav__link">Проміси</a>
+        <a href="3-search.html" class="nav__link">Пошук зображень</a>
+      </nav>
+    </header>
+
+    <main class="page page--narrow">
+      <section>
+        <h2 class="section-title">Таймер зворотного відліку</h2>
+
+        <div class="timer-controls">
+          <input
+            type="text"
+            id="datetime-picker"
+            placeholder="Оберіть дату та час"
+            readonly
+          />
+          <button type="button" data-start class="btn btn--primary" disabled>
+            Start
+          </button>
+        </div>
+
+        <div class="timer">
+          <div class="field">
+            <span class="value" data-days>00</span>
+            <span class="label">Days</span>
+          </div>
+          <div class="field">
+            <span class="value" data-hours>00</span>
+            <span class="label">Hours</span>
+          </div>
+          <div class="field">
+            <span class="value" data-minutes>00</span>
+            <span class="label">Minutes</span>
+          </div>
+          <div class="field">
+            <span class="value" data-seconds>00</span>
+            <span class="label">Seconds</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- JS бібліотеки -->
+    <script src="https://cdn.jsdelivr.net/npm/flatpickr"></script>
+    <script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
+
+    <!-- Логіка таймера -->
+    <script src="js/1-timer.js"></script>
+  </body>
+</html>

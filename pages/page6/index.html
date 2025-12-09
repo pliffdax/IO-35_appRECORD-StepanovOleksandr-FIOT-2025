@@ -1,0 +1,41 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ЛР7 – Галерея зображень</title>
+
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- basicLightbox CSS -->
+    <link
+      rel="stylesheet"
+      href="https://unpkg.com/basiclightbox@5.0.4/dist/basicLightbox.min.css"
+    />
+  </head>
+  <body>
+    <header class="header">
+      <h1>ЛР7 – Галерея зображень</h1>
+      <nav class="nav">
+        <a href="index.html" class="nav__link nav__link--active">Галерея</a>
+        <a href="cart.html" class="nav__link">Кошик</a>
+        <a href="2-form.html" class="nav__link">Форма</a>
+        <a href="1-timer.html" class="nav__link">Таймер</a>
+        <a href="2-snackbar.html" class="nav__link">Проміси</a>
+        <a href="3-search.html" class="nav__link">Пошук зображень</a>
+      </nav>
+    </header>
+
+    <main class="page">
+      <section>
+        <h2 class="section-title">Галерея</h2>
+        <ul class="gallery">
+          <!-- Елементи галереї буде згенеровано у gallery.js -->
+        </ul>
+      </section>
+    </main>
+
+    <!-- basicLightbox JS -->
+    <script src="https://unpkg.com/basiclightbox@5.0.4/dist/basicLightbox.min.js"></script>
+    <script src="js/gallery.js"></script>
+  </body>
+</html>

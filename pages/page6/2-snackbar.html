@@ -1,0 +1,80 @@
+<!doctype html>
+<html lang="uk">
+  <head>
+    <meta charset="UTF-8" />
+    <title>ЛР7 – Генератор промісів</title>
+
+    <link rel="stylesheet" href="css/style.css" />
+
+    <!-- iziToast CSS -->
+    <link
+      rel="stylesheet"
+      href="https://cdn.jsdelivr.net/npm/izitoast/dist/css/iziToast.min.css"
+    />
+  </head>
+  <body>
+    <header class="header">
+      <h1>ЛР7 – Генератор промісів</h1>
+      <nav class="nav">
+        <a href="index.html" class="nav__link">Галерея</a>
+        <a href="cart.html" class="nav__link">Кошик</a>
+        <a href="2-form.html" class="nav__link">Форма</a>
+        <a href="1-timer.html" class="nav__link">Таймер</a>
+        <a href="2-snackbar.html" class="nav__link nav__link--active">Проміси</a>
+        <a href="3-search.html" class="nav__link">Пошук зображень</a>
+      </nav>
+    </header>
+
+    <main class="page page--narrow">
+      <section>
+        <h2 class="section-title">Створення промісу з затримкою</h2>
+
+        <form class="promise-form" autocomplete="off">
+          <div class="promise-form__row">
+            <label class="promise-form__field">
+              <span class="promise-form__label">Delay (ms)</span>
+              <input
+                type="number"
+                name="delay"
+                min="0"
+                step="100"
+                placeholder="Наприклад, 1000"
+                required
+              />
+            </label>
+          </div>
+
+          <div class="promise-form__row">
+            <span class="promise-form__label">State</span>
+            <label class="promise-form__radio">
+              <input
+                type="radio"
+                name="state"
+                value="fulfilled"
+                checked
+              />
+              <span>Fulfilled</span>
+            </label>
+            <label class="promise-form__radio">
+              <input
+                type="radio"
+                name="state"
+                value="rejected"
+              />
+              <span>Rejected</span>
+            </label>
+          </div>
+
+          <button type="submit" class="btn btn--primary">
+            Create notification
+          </button>
+        </form>
+      </section>
+    </main>
+
+    <!-- iziToast JS -->
+    <script src="https://cdn.jsdelivr.net/npm/izitoast/dist/js/iziToast.min.js"></script>
+    <!-- Логіка промісів -->
+    <script src="js/2-snackbar.js"></script>
+  </body>
+</html>
