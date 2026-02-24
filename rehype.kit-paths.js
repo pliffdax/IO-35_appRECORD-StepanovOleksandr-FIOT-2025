@@ -1,7 +1,9 @@
 import { visit } from "unist-util-visit";
 
 const BASE =
-  process.env.NODE_ENV === "production" ? "/Labs-Markdown-Template" : "";
+  process.env.NODE_ENV === "production"
+    ? "IO-35_appRECORD-StepanovOleksandr-FIOT-2025"
+    : "";
 
 function isExternal(url) {
   return (
