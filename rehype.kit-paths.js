@@ -1,9 +1,5 @@
 import { visit } from "unist-util-visit";
-
-const BASE =
-  process.env.NODE_ENV === "production"
-    ? "IO-35_appRECORD-StepanovOleksandr-FIOT-2025"
-    : "";
+import { BASE_PATH } from "./base-path.js";
 
 function isExternal(url) {
   return (
@@ -20,9 +16,9 @@ function withBase(url) {
   const normalized = url.startsWith("/") ? url : `/${url}`;
 
   // already has base
-  if (BASE && normalized.startsWith(`${BASE}/`)) return normalized;
+  if (BASE_PATH && normalized.startsWith(`${BASE_PATH}/`)) return normalized;
 
-  return `${BASE}${normalized}`;
+  return `${BASE_PATH}${normalized}`;
 }
 
 export function rehypeKitPaths() {
